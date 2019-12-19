@@ -69,7 +69,16 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
-            motor.Jump(jumpForce);
+            float power;
+            if (Input.GetButtonDown("Jump"))
+            {
+                power = jumpForce;
+            }
+            else
+            {
+                power = 0.0f;
+            }
+            motor.Jump(power);
         }
     }
 }
