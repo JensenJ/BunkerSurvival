@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+
+//The player controller is a unit controlled by a player
 
 [RequireComponent(typeof(PlayerMotor))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public bool canMove = true;
     public bool lockCursor = true;
@@ -27,6 +30,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Check that this is owned by player
+        if(hasAuthority == false)
+        {
+            return;
+        }
+
         //Movement
         Move();
         Rotate();

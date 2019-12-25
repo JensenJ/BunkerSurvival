@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1141354017866550302}
   - component: {fileID: -6738574630152916180}
+  - component: {fileID: 3207496503193235079}
   - component: {fileID: 1141354017866550298}
   - component: {fileID: 1141354017866550277}
   - component: {fileID: 1141354017866550276}
+  - component: {fileID: 8105985709092397544}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -27,15 +29,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141354017866550279}
-  m_LocalRotation: {x: 0, y: -0.5735764, z: 0, w: 0.8191521}
-  m_LocalPosition: {x: 12, y: 2, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1141354019429747494}
   - {fileID: 7294550682205614991}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -70, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-6738574630152916180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,6 +53,21 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   m_SceneId: 0
+--- !u!114 &3207496503193235079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141354017866550279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0
+  compressRotation: 1
 --- !u!54 &1141354017866550298
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -93,12 +110,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca23c0c5f5621d14583b3f8cd1e0e17d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   canMove: 1
   lockCursor: 0
   speed: 5
   sprintSpeed: 7
   sensitivity: 3
   jumpForce: 4
+--- !u!114 &8105985709092397544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141354017866550279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c0ac8cc7442484aabad4442f378216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  componentsToDisable:
+  - {fileID: 1141354017866550276}
+  - {fileID: 1141354017866550277}
+  - {fileID: 1141354019429747493}
+  - {fileID: 1141354019429747492}
 --- !u!1 &1141354019429747489
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +151,7 @@ GameObject:
   - component: {fileID: 1141354019429747495}
   m_Layer: 0
   m_Name: PlayerCam
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
