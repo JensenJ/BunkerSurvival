@@ -814,7 +814,7 @@ MonoBehaviour:
   OnServerDisconnected:
     m_PersistentCalls:
       m_Calls: []
-  port: 7777
+  port: 25565
   NoDelay: 1
   serverMaxMessageSize: 16384
   clientMaxMessageSize: 16384

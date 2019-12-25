@@ -5,8 +5,9 @@ using Mirror;
 
 public class PlayerConnectionObject : NetworkBehaviour
 {
-    public GameObject playerGameObject;
-    [SyncVar(hook = "OnPlayerNameChange")] public string playerName = "Player";
+    public GameObject playerGameObjectPrefab;
+    public string playerName = "Player";
+    GameObject playerGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -37,15 +38,9 @@ public class PlayerConnectionObject : NetworkBehaviour
         }
     }
 
-    //Called by hook on playername syncvar
-    void OnPlayerNameChange(string newName) 
+    void OnDestroy()
     {
-        //Print name change
-        Debug.Log("PlayerName Changed:" + playerName + " to " + newName);
-        //Change game object name
-        gameObject.name = "PlayerConnectionObject(" + newName + ")";
-        //Setting manually as when a hook is used the local value does not get updated
-        playerName = newName;
+        Destroy(playerGameObject);
     }
 
     /////////////////////////////// COMMANDS ///////////////////////////////
@@ -57,28 +52,46 @@ public class PlayerConnectionObject : NetworkBehaviour
     void CmdSpawnPlayerGameObject()
     {
         //Creating object on server
-        GameObject go = Instantiate(playerGameObject);
+        playerGameObject = Instantiate(playerGameObjectPrefab);
+        Debug.Log("Created new object, player object: " + playerGameObject);
 
-        go.transform.position = transform.position;
-        transform.position = new Vector3(0, 0, 0);
+        playerGameObject.transform.position = transform.position;
+        playerGameObject.transform.rotation = transform.rotation;
+
+        RpcSetupNewPlayerConnection();
 
         //Spawn object on all clients
-        NetworkServer.Spawn(go, connectionToClient);
+        NetworkServer.Spawn(playerGameObject, connectionToClient);
     }
 
     //Command to change player name on server
     [Command]
     void CmdChangePlayerName(string newName)
     {
-        playerName = newName;
-       //RpcChangePlayerName(newName);
+       RpcChangePlayerName(newName);
+       playerName = newName;
     }
 
     /////////////////////////////// RPC ///////////////////////////////
     //RPCs are functions that are only executed on clients
-    //[ClientRpc]
-    //void RpcChangePlayerName(string newName)
-    //{
-    //    playerName = newName;
-    //}
+
+    [ClientRpc]
+    void RpcSetupNewPlayerConnection()
+    {
+        //Reset position to 0, 0, 0
+        transform.position = new Vector3(0, 0, 0);
+        //Reset rotation to 0, 0, 0
+        transform.rotation = Quaternion.identity;
+    }
+
+    [ClientRpc]
+    void RpcChangePlayerName(string newName)
+    {
+        //Print name change
+        Debug.Log("PlayerName Changed:" + playerName + " to " + newName);
+        //Change game object name
+        gameObject.name = "PlayerConnectionObject(" + newName + ")";
+        //Setting manually as when a hook is used the local value does not get updated
+        playerName = newName;
+    }
 }

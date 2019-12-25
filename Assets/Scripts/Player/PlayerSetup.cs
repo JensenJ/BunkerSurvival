@@ -4,7 +4,7 @@ using Mirror;
 public class PlayerSetup : NetworkBehaviour
 {
 
-    [SerializeField] Behaviour[] componentsToDisable;
+    [SerializeField] Behaviour[] componentsToDisable = null;
     Camera sceneCamera;
 
     // Start is called before the first frame update
