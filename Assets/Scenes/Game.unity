@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 1645.6096, g: 2304.9363, b: 3594.034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -51,8 +51,8 @@ LightmapSettings:
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableBakedLightmaps: 0
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 2
@@ -96,7 +96,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: f1f32266b70fae642b77444f875772ba,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -253,10 +254,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGlobal: 1
-  priority: 0
+  priority: -1
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: cf1b32335766f2e40a3d01fb915d6960, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 7389d7b6b2e66b34fad3d6be03b3ca63, type: 2}
 --- !u!4 &638301213
 Transform:
   m_ObjectHideFlags: 0
@@ -1245,11 +1246,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 1
-  shadowResolution: 512
+  shadowResolution: 2048
   shadowDimmer: 1
   volumetricShadowDimmer: 1
   shadowFadeDistance: 10000
-  contactShadows: 0
+  contactShadows: 1
   shadowTint: {r: 0, g: 0, b: 0, a: 1}
   viewBiasMin: 0.2
   viewBiasMax: 100
@@ -1307,7 +1308,7 @@ MonoBehaviour:
   shapeHeight: 0.5
   aspectRatio: 1
   shapeRadius: 0
-  maxSmoothness: 0.99
+  maxSmoothness: 1
   applyRangeAttenuation: 1
   useOldInspector: 0
   useVolumetric: 1
@@ -1400,13 +1401,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700555472}
-  m_LocalRotation: {x: 0.23684897, y: -0.2195253, z: 0.10061279, w: 0.94105697}
+  m_LocalRotation: {x: 0.2934136, y: -0.15041032, z: -0.15466405, w: 0.93132395}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1.0000001, z: 0.99999994}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 29.337002, y: 695.211, z: 5.6200004}
+  m_LocalEulerAnglesHint: {x: 30, y: -25.36, z: -25.758001}
 --- !u!1001 &2095942369
 PrefabInstance:
   m_ObjectHideFlags: 0
