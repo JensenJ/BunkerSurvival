@@ -8,8 +8,8 @@ using Mirror;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : NetworkBehaviour
 {
+    public bool isCursorEnabled = false;
     public bool canMove = true;
-    public bool lockCursor = true;
     [SerializeField] [Range(0, 10)] public float speed = 5.0f;
     [SerializeField] [Range(0, 15)] public float sprintSpeed = 7.0f;
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
@@ -20,11 +20,9 @@ public class PlayerController : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Start settings
         motor = GetComponent<PlayerMotor>();
-        if (lockCursor)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        DisableCursor();
     }
 
     // Update is called once per frame
@@ -36,10 +34,39 @@ public class PlayerController : NetworkBehaviour
             return;
         }
 
+        //Toggle cursor activation
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            if (isCursorEnabled)
+            {
+                DisableCursor();
+                canMove = true;
+            }
+            else
+            {
+                EnableCursor();
+                canMove = false;
+            }
+        }
+
         //Movement
         Move();
         Rotate();
         Jump();
+    }
+
+    //Function to enable cursor, used in menus
+    void EnableCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        isCursorEnabled = true;
+    }
+
+    //Function to disable cursor, used in menus
+    void DisableCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        isCursorEnabled = false;
     }
 
     //Movement
