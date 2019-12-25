@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public bool canMove = true;
+    public bool lockCursor = true;
     [SerializeField] [Range(0, 10)] public float speed = 5.0f;
     [SerializeField] [Range(0, 15)] public float sprintSpeed = 7.0f;
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
@@ -17,7 +18,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         motor = GetComponent<PlayerMotor>();
-        Cursor.lockState = CursorLockMode.Locked;
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     // Update is called once per frame
