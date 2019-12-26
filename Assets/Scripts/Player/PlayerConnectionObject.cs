@@ -5,13 +5,16 @@ using Mirror;
 
 public class PlayerConnectionObject : NetworkBehaviour
 {
-    public GameObject playerGameObjectPrefab;
+    public GameObject gameManager = null;
+    public GameObject playerGameObjectPrefab = null;
     public string playerName = "Player";
-    GameObject playerGameObject;
+    GameObject playerGameObject = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
+
         if(isLocalPlayer == false)
         {
             //This object belongs to another player

@@ -128,11 +128,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 188031460}
     m_Modifications:
-    - target: {fileID: 8584582919350990847, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
-        type: 3}
-      propertyPath: m_Name
-      value: CorridorStraightSupportFeet1 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 4718023595226023404, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -188,6 +183,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8584582919350990847, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
+        type: 3}
+      propertyPath: m_Name
+      value: CorridorStraightSupportFeet1 (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5253e5f4a1fcdd743a7c1ee710c22c46, type: 3}
 --- !u!1 &188031459
@@ -233,10 +233,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 450970654}
+  - component: {fileID: 450970655}
   - component: {fileID: 450970653}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,15 +254,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd64e440a95fd534595d1cba94f9cd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   sun: {fileID: 1700555475}
   timeMultiplier: 1
   daysInMonth: 30
   monthsInYear: 12
   currentTimeOfDay: 0
   secondsInFullDay: 120
-  Clockwork: 720
+  minutes: 0
+  hours: 0
+  day: 1
+  month: 1
+  year: 1
   sunInitialIntensity: 0
-  currentIntensity: 0
   tempMultiplier: 1
   bIsTempFahrenheit: 0
   temperature: 0
@@ -285,6 +291,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &450970655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450970652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverOnly: 0
+  m_AssetId: 
+  m_SceneId: 3116407046
 --- !u!1 &638301211
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,11 +932,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 889302592}
     m_Modifications:
-    - target: {fileID: 8045838590603893712, guid: 291f26d94ec42ab4b923c5950180bc88,
-        type: 3}
-      propertyPath: m_Name
-      value: CorridorStraightSection1 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 6481759898383542723, guid: 291f26d94ec42ab4b923c5950180bc88,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -970,6 +986,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045838590603893712, guid: 291f26d94ec42ab4b923c5950180bc88,
+        type: 3}
+      propertyPath: m_Name
+      value: CorridorStraightSection1 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 291f26d94ec42ab4b923c5950180bc88, type: 3}
@@ -1169,11 +1190,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 188031460}
     m_Modifications:
-    - target: {fileID: 4215572006791832279, guid: 4f4d510d8b364b840b26e8854cc7a86e,
-        type: 3}
-      propertyPath: m_Name
-      value: CorridorCableTray1
-      objectReference: {fileID: 0}
     - target: {fileID: 926582360328016068, guid: 4f4d510d8b364b840b26e8854cc7a86e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1228,6 +1244,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4215572006791832279, guid: 4f4d510d8b364b840b26e8854cc7a86e,
+        type: 3}
+      propertyPath: m_Name
+      value: CorridorCableTray1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f4d510d8b364b840b26e8854cc7a86e, type: 3}
@@ -1688,11 +1709,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 188031460}
     m_Modifications:
-    - target: {fileID: 3008379049826226679, guid: 88a2149f762fa5e4e8819ce0955657d2,
-        type: 3}
-      propertyPath: m_Name
-      value: CorridorStraightSectionWindows1
-      objectReference: {fileID: 0}
     - target: {fileID: 2298156419675349988, guid: 88a2149f762fa5e4e8819ce0955657d2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1747,6 +1763,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008379049826226679, guid: 88a2149f762fa5e4e8819ce0955657d2,
+        type: 3}
+      propertyPath: m_Name
+      value: CorridorStraightSectionWindows1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88a2149f762fa5e4e8819ce0955657d2, type: 3}
@@ -2006,11 +2027,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 889302592}
     m_Modifications:
-    - target: {fileID: 8584582919350990847, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
-        type: 3}
-      propertyPath: m_Name
-      value: CorridorStraightSupportFeet1 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 4718023595226023404, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2065,6 +2081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584582919350990847, guid: 5253e5f4a1fcdd743a7c1ee710c22c46,
+        type: 3}
+      propertyPath: m_Name
+      value: CorridorStraightSupportFeet1 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5253e5f4a1fcdd743a7c1ee710c22c46, type: 3}
