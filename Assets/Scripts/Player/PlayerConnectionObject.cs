@@ -25,6 +25,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         Debug.Log("PlayerObject::Start - Spawning player game object");
 
         CmdSpawnPlayerGameObject();
+        CmdUpdateEnvironment();
     }
 
     // Update is called once per frame
@@ -69,11 +70,21 @@ public class PlayerConnectionObject : NetworkBehaviour
 
     //Command to change player name on server
     [Command]
-    void CmdChangePlayerName(string newName)
+    public void CmdChangePlayerName(string newName)
     {
        RpcChangePlayerName(newName);
        playerName = newName;
     }
+
+    //Command to update environment
+    [Command]
+    public void CmdUpdateEnvironment()
+    {
+        print("CMD: Updating Environment");
+        EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
+        RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windStrength, controller.windAngle);
+    }
+
 
     /////////////////////////////// RPC ///////////////////////////////
     //RPCs are functions that are only executed on clients
@@ -96,5 +107,19 @@ public class PlayerConnectionObject : NetworkBehaviour
         gameObject.name = "PlayerConnectionObject(" + newName + ")";
         //Setting manually as when a hook is used the local value does not get updated
         playerName = newName;
+    }
+
+    [ClientRpc]
+    void RpcUpdateEnvironment(float m_timeMultiplier, float m_currentTime, int m_days, float m_secondsInFullDay, float m_temperature, float m_windStrength, float m_windAngle)
+    {
+        print("RPC: Updating Environment");
+        EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
+        controller.timeMultiplier = m_timeMultiplier;
+        controller.currentTimeOfDay = m_currentTime;
+        controller.days = m_days;
+        controller.secondsInFullDay = m_secondsInFullDay;
+        controller.temperature = m_temperature;
+        controller.windStrength = m_windStrength;
+        controller.windAngle = m_windAngle;
     }
 }

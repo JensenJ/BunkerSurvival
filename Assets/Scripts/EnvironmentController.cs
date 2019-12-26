@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Mirror;
 
 public class EnvironmentController : NetworkBehaviour
@@ -11,8 +12,6 @@ public class EnvironmentController : NetworkBehaviour
     //Time settings
     [Header("Time:")]
     [SerializeField] [Range(1, 64)] public float timeMultiplier = 1f;
-    [SerializeField] [Range(1, 120)] public int daysInMonth = 30;
-    [SerializeField] [Range(1, 40)] public int monthsInYear = 12;
     //Slider for percentage of full day done
     [Range(0, 1)] [SerializeField] public float currentTimeOfDay = 0;
     [SerializeField] public float secondsInFullDay = 120f;
@@ -21,9 +20,7 @@ public class EnvironmentController : NetworkBehaviour
     [Space(10)]
     [SerializeField] public int minutes = 0;
     [SerializeField] public int hours = 0;
-    [SerializeField] public int day = 1;
-    [SerializeField] public int month = 1;
-    [SerializeField] public int year = 1;
+    [SerializeField] public int days = 0;
     float lastHour = -1;
 
     [Space(10)]
@@ -72,7 +69,6 @@ public class EnvironmentController : NetworkBehaviour
     float[] gameWindAngle;
     float averageWindAngle;
 
-
     void Start()
     {
         //Setting defaults
@@ -102,7 +98,7 @@ public class EnvironmentController : NetworkBehaviour
         if (currentTimeOfDay >= 1)
         {
             currentTimeOfDay = 0;
-            Calendar();
+            days++;
         }
     }
 
@@ -119,46 +115,50 @@ public class EnvironmentController : NetworkBehaviour
             WindStrength();
             WindAngle();
             lastHour = hours;
+
+            //Get all players
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            //Loop over them
+            for (int i = 0; i < players.Length; i++)
+            {
+                //Get player connection object
+                PlayerConnectionObject playerObject = players[i].GetComponent<PlayerConnectionObject>();
+                //If this is the local player
+                if(playerObject.isLocalPlayer == true)
+                {
+                    //command host to update environment
+                    playerObject.CmdUpdateEnvironment();
+                }
+            }
         }
 
         minutes = Mathf.FloorToInt(currentMinutes);
         hours = Mathf.FloorToInt(currentHours);
     }
 
-    void Calendar()
-    {
-        //Calendar function
-        day++;
-        if (day > daysInMonth)
-        {
-            day = 1;
-            month++;
-        }
-        if (month > monthsInYear)
-        {
-            month = 1;
-            year++;
-        }
-    }
-
     void UpdateSun()
     {
+        //Set sun rotation
         sun.transform.localRotation = Quaternion.Euler((currentTimeOfDay * 360f) - 90, 170, 0);
 
+        //Light intensity
         float intensityMultiplier = 1;
+        //Night
         if (currentTimeOfDay <= 0.23f || currentTimeOfDay >= 0.75f)
         {
             intensityMultiplier = 0;
         }
+        //Sunrise
         else if (currentTimeOfDay <= 0.25f)
         {
             intensityMultiplier = Mathf.Clamp01((currentTimeOfDay - 0.23f) * (1 / 0.02f));
         }
+        //Sunset
         else if (currentTimeOfDay >= 0.73f)
         {
             intensityMultiplier = Mathf.Clamp01(1 - ((currentTimeOfDay - 0.73f) * (1 / 0.02f)));
         }
-
+        //Apply intensity
         sun.intensity = sunInitialIntensity * intensityMultiplier;
     }
 
