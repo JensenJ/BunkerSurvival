@@ -18,19 +18,15 @@ public class EnvironmentController : MonoBehaviour
 
     //Time variables
     [Space(10)]
-    private float Minutes = 0;
-    private float Hours = 0;
-    private int Day = 1;
-    private int Month = 1;
-    private int Year = 1;
-    public float Clockwork = 360;
+    [SerializeField] private float Minutes = 0;
+    [SerializeField] private float Hours = 0;
+    [SerializeField] private int Day = 1;
+    [SerializeField] private int Month = 1;
+    [SerializeField] private int Year = 1;
 
-
+    [Space(10)]
     //Variables for calculations later.
-    private float DayTick;
     [SerializeField] private float sunInitialIntensity;
-    private float DayNightHours;
-
     [SerializeField] private float currentIntensity;
 
     //Temperature
@@ -102,8 +98,6 @@ public class EnvironmentController : MonoBehaviour
         Temperature();
         WindStrength();
         WindAngle();
-
-        print("Hours: " + Hours + ", Minutes: " + Minutes);
     }
 
     void SetClockwork()
