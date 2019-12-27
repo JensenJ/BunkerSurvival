@@ -110,16 +110,10 @@ public class PlayerController : NetworkBehaviour
     {
         if (canMove)
         {
-            float power;
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && motor.IsGrounded())
             {
-                power = jumpForce;
+                motor.Jump(jumpForce);
             }
-            else
-            {
-                power = 0.0f;
-            }
-            motor.Jump(power);
         }
     }
 }

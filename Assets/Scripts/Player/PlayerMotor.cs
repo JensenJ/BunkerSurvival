@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : MonoBehaviour
+public class PlayerMotor : NetworkBehaviour
 {
     //Local variables
     private Rigidbody rb;
@@ -23,6 +24,12 @@ public class PlayerMotor : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         cam = transform.GetChild(0).GetComponent<Camera>();
+        if (!hasAuthority)
+        {
+            return;
+        }
+        rb.useGravity = true;
+        
     }
 
     // Update is called once per frame
@@ -54,11 +61,7 @@ public class PlayerMotor : MonoBehaviour
     public void Jump(float m_jumpForce)
     {
         jumpForce = m_jumpForce;
-        //Prevents double jumps
-        if (IsGrounded())
-        {
-            rb.AddForce(0.0f, jumpForce, 0.0f, ForceMode.Impulse);
-        }
+        rb.AddForce(0.0f, jumpForce, 0.0f, ForceMode.Impulse);
     }
 
     //Sets cam rotation from player controller
