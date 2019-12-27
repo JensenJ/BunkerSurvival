@@ -334,9 +334,9 @@ MonoBehaviour:
   syncInterval: 0.1
   sun: {fileID: 1700555475}
   timeMultiplier: 1
-  currentTimeOfDay: 0.3
+  currentTimeOfDay: 0
   secondsInFullDay: 120
-  startingTime: 0.3
+  startingTime: 0.8
   minutes: 0
   hours: 0
   days: 0
