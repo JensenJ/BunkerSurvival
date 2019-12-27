@@ -13,7 +13,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] [Range(0, 10)] public float speed = 5.0f;
     [SerializeField] [Range(0, 15)] public float sprintSpeed = 7.0f;
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
-    [SerializeField] [Range(0, 4)] public float jumpForce = 2.0f;
+    [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
 
     PlayerMotor motor;
 

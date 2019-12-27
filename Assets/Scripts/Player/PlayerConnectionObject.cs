@@ -55,9 +55,9 @@ public class PlayerConnectionObject : NetworkBehaviour
     [Command]
     void CmdSpawnPlayerGameObject()
     {
+        Debug.Log("CMD: Spawning new player");
         //Creating object on server
         playerGameObject = Instantiate(playerGameObjectPrefab);
-        Debug.Log("Created new object, player object: " + playerGameObject);
 
         playerGameObject.transform.position = transform.position;
         playerGameObject.transform.rotation = transform.rotation;
@@ -72,15 +72,16 @@ public class PlayerConnectionObject : NetworkBehaviour
     [Command]
     public void CmdChangePlayerName(string newName)
     {
-       RpcChangePlayerName(newName);
-       playerName = newName;
+        Debug.Log("CMD: Player name change requested: " + playerName + " to " + newName);
+        RpcChangePlayerName(newName);
+        playerName = newName;
     }
 
     //Command to update environment
     [Command]
     public void CmdUpdateEnvironment()
     {
-        print("CMD: Updating Environment");
+        Debug.Log("CMD: Updating Environment");
         EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
         RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windStrength, controller.windAngle);
     }
@@ -101,8 +102,6 @@ public class PlayerConnectionObject : NetworkBehaviour
     [ClientRpc]
     void RpcChangePlayerName(string newName)
     {
-        //Print name change
-        Debug.Log("PlayerName Changed:" + playerName + " to " + newName);
         //Change game object name
         gameObject.name = "PlayerConnectionObject(" + newName + ")";
         //Setting manually as when a hook is used the local value does not get updated
@@ -112,7 +111,6 @@ public class PlayerConnectionObject : NetworkBehaviour
     [ClientRpc]
     void RpcUpdateEnvironment(float m_timeMultiplier, float m_currentTime, int m_days, float m_secondsInFullDay, float m_temperature, float m_windStrength, float m_windAngle)
     {
-        print("RPC: Updating Environment");
         EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
         controller.timeMultiplier = m_timeMultiplier;
         controller.currentTimeOfDay = m_currentTime;

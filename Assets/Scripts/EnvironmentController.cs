@@ -2,6 +2,7 @@
 using UnityEngine;
 using Mirror;
 
+[RequireComponent(typeof(NetworkUtils))]
 public class EnvironmentController : NetworkBehaviour
 {
 
@@ -69,6 +70,8 @@ public class EnvironmentController : NetworkBehaviour
     float[] gameWindAngle;
     float averageWindAngle;
 
+    NetworkUtils networkUtils;
+
     void Start()
     {
         //Setting defaults
@@ -80,6 +83,7 @@ public class EnvironmentController : NetworkBehaviour
         gameTemp = new float[3];
         gameWind = new float[3];
         gameWindAngle = new float[3];
+        networkUtils = GetComponent<NetworkUtils>();
     }
 
     void Update()
@@ -116,7 +120,12 @@ public class EnvironmentController : NetworkBehaviour
             WindAngle();
             lastHour = hours;
 
-            GetComponent<NetworkUtils>().GetHostPlayerConnectionObject().CmdUpdateEnvironment();
+            //Update environment
+            PlayerConnectionObject host = networkUtils.GetHostPlayerConnectionObject();
+            if(host != null)
+            {
+                host.CmdUpdateEnvironment();
+            }
         }
 
         minutes = Mathf.FloorToInt(currentMinutes);

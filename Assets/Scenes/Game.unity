@@ -234,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 450970654}
   - component: {fileID: 450970655}
+  - component: {fileID: 450970656}
   - component: {fileID: 450970653}
   m_Layer: 0
   m_Name: GameManager
@@ -262,6 +263,7 @@ MonoBehaviour:
   secondsInFullDay: 120
   minutes: 0
   hours: 0
+  days: 0
   sunInitialIntensity: 0
   tempMultiplier: 1
   bIsTempFahrenheit: 0
@@ -301,6 +303,18 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   m_SceneId: 3116407046
+--- !u!114 &450970656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450970652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2466ac0651692cf47b6ec597e375b9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &638301211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,7 +1372,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   runInBackground: 1
   startOnHeadless: 1
-  serverTickRate: 64
+  serverTickRate: 32
   showDebugMessages: 0
   offlineScene: 
   onlineScene: 
