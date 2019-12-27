@@ -269,9 +269,9 @@ MonoBehaviour:
   bIsTempFahrenheit: 0
   temperature: 0
   tempPrecision: 2
-  windStrengthMultiplier: 1
-  windStrength: 0
-  windStrengthPrecision: 2
+  windSpeedMultiplier: 3
+  windSpeed: 0
+  windSpeedPrecision: 2
   windAngle: 0
   windAnglePrecision: 2
 --- !u!4 &450970654

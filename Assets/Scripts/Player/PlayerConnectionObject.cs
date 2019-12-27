@@ -83,7 +83,7 @@ public class PlayerConnectionObject : NetworkBehaviour
     {
         Debug.Log("CMD: Updating Environment");
         EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
-        RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windStrength, controller.windAngle);
+        RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windSpeed, controller.windAngle);
     }
 
 
@@ -117,7 +117,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         controller.days = m_days;
         controller.secondsInFullDay = m_secondsInFullDay;
         controller.temperature = m_temperature;
-        controller.windStrength = m_windStrength;
+        controller.windSpeed = m_windStrength;
         controller.windAngle = m_windAngle;
     }
 }

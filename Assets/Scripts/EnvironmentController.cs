@@ -48,9 +48,9 @@ public class EnvironmentController : NetworkBehaviour
     //Wind
     [Header("Wind:")]
     //Wind settings
-    [SerializeField] [Range(0, 5)] public float windStrengthMultiplier = 1;
-    [SerializeField] public float windStrength = 0;
-    [SerializeField] [Range(0, 4)] public int windStrengthPrecision = 2;
+    [SerializeField] [Range(0, 5)] public float windSpeedMultiplier = 1;
+    [SerializeField] public float windSpeed = 0;
+    [SerializeField] [Range(0, 4)] public int windSpeedPrecision = 2;
 
     //Wind variable
     bool bNewGenerationWind = true;
@@ -116,7 +116,7 @@ public class EnvironmentController : NetworkBehaviour
         if (lastHour != hours)
         {
             Temperature();
-            WindStrength();
+            WindSpeed();
             WindAngle();
             lastHour = hours;
 
@@ -203,7 +203,7 @@ public class EnvironmentController : NetworkBehaviour
         averageTemp = (gameTemp[0] + gameTemp[1] + gameTemp[2]) / 3;
 
         //apply wind strength to temperature
-        averageTemp = averageTemp - (windStrength / 5);
+        averageTemp = averageTemp - (windSpeed / 5);
 
         //Makes sure temperature is not below absolute zero.
         if (averageTemp < -273.0f)
@@ -226,18 +226,18 @@ public class EnvironmentController : NetworkBehaviour
     }
 
     //Function to generate wind strength for that hour
-    void WindStrength()
+    void WindSpeed()
     {
         //check for new game
         if (bNewGenerationWind)
         {
-            lastWind = Random.Range(0, 7);
+            lastWind = Random.Range(0.0f, 7.0f);
             bNewGenerationWind = false;
         }
 
         for (int i = 0; i < 3; i++) //repeats for average
         {
-            generatedWind = Random.Range(-3.0f, 3.0f); //generate base wind
+            generatedWind = Random.Range(0.0f, 7.0f); //generate base wind
 
             //makes sure wind difference is not too large
             if ((generatedWind - lastWind) > 3)
@@ -257,9 +257,9 @@ public class EnvironmentController : NetworkBehaviour
         averageWind = (gameWind[0] + gameWind[1] + gameWind[2]) / 3;
 
         //makes sure wind is not too extreme and wind is not less than 0
-        if (averageWind > 2.5f)
+        if (averageWind > 10.0f)
         {
-            averageWind = averageWind - Random.Range(0.3f, 0.9f);
+            averageWind = averageWind - Random.Range(0.3f, 3.9f);
         }
         else if (averageWind < 0)
         {
@@ -268,12 +268,12 @@ public class EnvironmentController : NetworkBehaviour
         //sets last wind = generated wind
         lastWind = averageWind;
         //applies multiplier.
-        averageWind = averageWind * windStrengthMultiplier;
+        averageWind = averageWind * windSpeedMultiplier;
 
         //rounds to chosen number of dp
-        averageWind = (float)System.Math.Round(averageWind, windStrengthPrecision);
+        averageWind = (float)System.Math.Round(averageWind, windSpeedPrecision);
 
-        windStrength = averageWind; //sets actual world wind = generated wind.
+        windSpeed = averageWind; //sets actual world wind = generated wind.
     }
 
     //Function to generate wind angle for that hour
