@@ -400,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 279068938053976142, guid: 6e68f06b784a41849b0ef65b16bdcf7a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.827961
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 279068938053976142, guid: 6e68f06b784a41849b0ef65b16bdcf7a,
         type: 3}
@@ -1585,7 +1585,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 1131660648}
-  networkAddress: localhost
+  networkAddress: 86.176.81.234
   maxConnections: 4
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 691305206773560312, guid: 4c086780f9c5774489e661289f51f845,
