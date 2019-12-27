@@ -116,20 +116,7 @@ public class EnvironmentController : NetworkBehaviour
             WindAngle();
             lastHour = hours;
 
-            //Get all players
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            //Loop over them
-            for (int i = 0; i < players.Length; i++)
-            {
-                //Get player connection object
-                PlayerConnectionObject playerObject = players[i].GetComponent<PlayerConnectionObject>();
-                //If this is the local player
-                if(playerObject.isLocalPlayer == true)
-                {
-                    //command host to update environment
-                    playerObject.CmdUpdateEnvironment();
-                }
-            }
+            GetComponent<NetworkUtils>().GetHostPlayerConnectionObject().CmdUpdateEnvironment();
         }
 
         minutes = Mathf.FloorToInt(currentMinutes);

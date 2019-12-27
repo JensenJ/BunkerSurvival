@@ -84,6 +84,7 @@ public class PlayerController : NetworkBehaviour
 
             velocity = (moveHorizontal + moveVertical).normalized * speed;
         }
+
         motor.Move(velocity);
     }
 
