@@ -17,6 +17,8 @@ public class EnvironmentController : NetworkBehaviour
     [Range(0, 1)] [SerializeField] public float currentTimeOfDay = 0;
     [SerializeField] public float secondsInFullDay = 120f;
 
+    [SerializeField] public float startingTime = 0.3f;
+
     //Time variables
     [Space(10)]
     [SerializeField] public int minutes = 0;
@@ -84,6 +86,7 @@ public class EnvironmentController : NetworkBehaviour
         gameWind = new float[3];
         gameWindAngle = new float[3];
         networkUtils = GetComponent<NetworkUtils>();
+        currentTimeOfDay = startingTime;
     }
 
     void Update()
