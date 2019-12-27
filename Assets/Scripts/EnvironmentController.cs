@@ -17,7 +17,7 @@ public class EnvironmentController : NetworkBehaviour
     [Range(0, 1)] [SerializeField] public float currentTimeOfDay = 0;
     [SerializeField] public float secondsInFullDay = 120f;
 
-    [SerializeField] public float startingTime = 0.3f;
+    [SerializeField] [Range(0.0f, 1.0f)] public float startingTime = 0.3f;
 
     //Time variables
     [Space(10)]
