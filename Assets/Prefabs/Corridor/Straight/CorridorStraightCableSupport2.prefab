@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6596231464452460980}
   - component: {fileID: 170116290163211634}
   - component: {fileID: 4805855136041604807}
-  - component: {fileID: 4790732698847574483}
+  - component: {fileID: 3435279165855851726}
   m_Layer: 0
   m_Name: CorridorStraightCableSupport2
   m_TagString: Untagged
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: bca48f33b64161946a99d45a07fdd470, type: 3}
+  - {fileID: 2100000, guid: 9154fab2571e32c4eae48be079ecf4a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &4790732698847574483
+--- !u!65 &3435279165855851726
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,5 +110,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.20000005, y: 2.5769699, z: 0.3600497}
+  m_Size: {x: 2.2, y: 2.5769699, z: 0.3600497}
   m_Center: {x: 0, y: -0.00085401523, z: 4.009314}
