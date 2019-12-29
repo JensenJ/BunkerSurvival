@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3187369898630953917}
   - component: {fileID: 6596231464452460980}
   - component: {fileID: 170116290163211634}
-  - component: {fileID: 4805855136041604807}
   - component: {fileID: 3435279165855851726}
   m_Layer: 0
   m_Name: CorridorStraightCableSupport2
@@ -80,25 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!95 &4805855136041604807
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900670577253632430}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: bca48f33b64161946a99d45a07fdd470, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!65 &3435279165855851726
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -110,5 +90,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.2, y: 2.5769699, z: 0.3600497}
-  m_Center: {x: 0, y: -0.00085401523, z: 4.009314}
+  m_Size: {x: 2.2, y: 2.832319, z: 0.2893333}
+  m_Center: {x: 0, y: -0.0009821056, z: 3.9739556}
