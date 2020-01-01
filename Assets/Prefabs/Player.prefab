@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1141354017866550277}
   - component: {fileID: 1141354017866550276}
   - component: {fileID: 8105985709092397544}
+  - component: {fileID: 6485417962161998986}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -139,6 +140,20 @@ MonoBehaviour:
   - {fileID: 1141354017866550277}
   - {fileID: 1141354019429747493}
   - {fileID: 1141354019429747492}
+--- !u!114 &6485417962161998986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141354017866550279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180d42591e515496fb9e98a91e8732fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashLight: {fileID: 0}
+  flashLightStatus: 0
 --- !u!1 &1141354019429747489
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,9 +382,9 @@ Light:
   serializedVersion: 9
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 795774.7
+  m_Intensity: 63.661976
   m_Range: 25
-  m_SpotAngle: 90
+  m_SpotAngle: 60.26948
   m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
@@ -435,7 +450,7 @@ MonoBehaviour:
   areaIntensity: 200
   enableSpotReflector: 0
   luxAtDistance: 1
-  m_InnerSpotPercent: 40
+  m_InnerSpotPercent: 34.53758
   lightDimmer: 1
   m_VolumetricDimmer: 1
   lightUnit: 0

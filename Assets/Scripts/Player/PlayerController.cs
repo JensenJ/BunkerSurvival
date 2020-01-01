@@ -16,12 +16,14 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
 
     PlayerMotor motor;
+    PlayerFlashLight flashlight;
 
     // Start is called before the first frame update
     void Start()
     {
         //Start settings
         motor = GetComponent<PlayerMotor>();
+        flashlight = GetComponent<PlayerFlashLight>();
         DisableCursor();
     }
 
@@ -47,6 +49,11 @@ public class PlayerController : NetworkBehaviour
                 EnableCursor();
                 canMove = false;
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            flashlight.ToggleFlashLight(!flashlight.flashLightStatus);
         }
 
         //Movement
