@@ -144,7 +144,7 @@ MonoBehaviour:
     m_Value: 0
   meanHeight:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 15
   anisotropy:
     m_OverrideState: 1
     m_Value: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 1
   multiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -220,14 +220,14 @@ MonoBehaviour:
     min: 0
     max: 5
   skyTint:
-    m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   groundColor:
-    m_OverrideState: 1
-    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1

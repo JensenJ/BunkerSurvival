@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1645.9963, g: 2305.2566, b: 3594.3503, a: 1}
+  m_IndirectSpecularColor: {r: 0.101454034, g: 0.14165919, b: 0.22026388, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1350,7 +1350,7 @@ MonoBehaviour:
   syncInterval: 0.1
   sun: {fileID: 1700555475}
   timeMultiplier: 1
-  currentTimeOfDay: 0
+  currentTimeOfDay: 0.379
   secondsInFullDay: 120
   startingTime: 0.3
   minutes: 0
@@ -3597,7 +3597,7 @@ PrefabInstance:
     - target: {fileID: 1445517944835283526, guid: c110163a6f81b224dba4c7908fdace49,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1445517944835283526, guid: c110163a6f81b224dba4c7908fdace49,
         type: 3}
@@ -5012,7 +5012,7 @@ MonoBehaviour:
   useVolumetric: 1
   featuresFoldout: 1
   showAdditionalSettings: 0
-  displayLightIntensity: 100000
+  displayLightIntensity: 10
   displayAreaLightEmissiveMesh: 0
   areaLightCookie: {fileID: 0}
   areaLightShadowCone: 120
@@ -5043,7 +5043,7 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 100000
+  m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -6574,7 +6574,7 @@ PrefabInstance:
     - target: {fileID: 1445517944835283526, guid: c110163a6f81b224dba4c7908fdace49,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1445517944835283526, guid: c110163a6f81b224dba4c7908fdace49,
         type: 3}
