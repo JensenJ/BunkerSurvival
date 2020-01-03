@@ -15,8 +15,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
     [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
 
-    PlayerMotor motor;
-    PlayerFlashLight flashlight;
+    NetworkUtils netUtils = null;
+    GameObject gameManager = null;
+    PlayerMotor motor = null;
+    PlayerFlashLight flashlight = null;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +26,15 @@ public class PlayerController : NetworkBehaviour
         //Start settings
         motor = GetComponent<PlayerMotor>();
         flashlight = GetComponent<PlayerFlashLight>();
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
+        netUtils = gameManager.GetComponent<NetworkUtils>();
         DisableCursor();
+
+        //PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
+        //if(host != null)
+        //{
+        //    host.CmdResetPlayerConnections();
+        //}
     }
 
     // Update is called once per frame
@@ -53,7 +63,11 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            flashlight.ToggleFlashLight(!flashlight.flashLightStatus);
+            PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
+            if(host != null)
+            {
+                host.CmdToggleFlashLight();
+            }
         }
 
         //Movement

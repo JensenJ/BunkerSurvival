@@ -8,12 +8,12 @@ public class NetworkUtils : MonoBehaviour
     public PlayerConnectionObject GetHostPlayerConnectionObject()
     {
         //Get all players
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] playerConnections = GetAllPlayerConnectionObjects();
         //Loop over them
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < playerConnections.Length; i++)
         {
             //Get player connection object
-            PlayerConnectionObject playerObject = players[i].GetComponent<PlayerConnectionObject>();
+            PlayerConnectionObject playerObject = playerConnections[i].GetComponent<PlayerConnectionObject>();
             //If this is the local player
             if (playerObject.isLocalPlayer == true)
             {
@@ -22,5 +22,65 @@ public class NetworkUtils : MonoBehaviour
             }
         }
         return null;
+    }
+
+    //Returns an array of all player objects
+    public GameObject[] GetAllPlayerObjects()
+    {
+        return GameObject.FindGameObjectsWithTag("Player");
+    }
+
+    //Returns an array of all player connection objects
+    public GameObject[] GetAllPlayerConnectionObjects()
+    {
+        return GameObject.FindGameObjectsWithTag("PlayerConnection");
+    }
+
+    public PlayerController GetPlayerControllerObjectFromConnection(PlayerConnectionObject playerConnection)
+    {
+        //Finding all player objects and connections
+        GameObject[] playerControllers = GetAllPlayerObjects();
+        GameObject[] playerConnections = GetAllPlayerConnectionObjects();
+
+        //Find id of passed in player connection in array
+        int connectionID = 0;
+        for (int i = 0; i < playerConnections.Length; i++)
+        {
+            //If equal
+            if(playerConnection == playerConnections[i])
+            {
+                //Set id and break out of loop
+                connectionID = i;
+                break;
+            }
+        }
+        
+        //Get item within array and return
+        PlayerController controller = playerControllers[connectionID].GetComponent<PlayerController>();
+        return controller;
+    }
+
+    public PlayerConnectionObject GetPlayerConnectionObjectFromController(PlayerController playerController)
+    {
+        //Finding all player objects and connections
+        GameObject[] playerControllers = GetAllPlayerObjects();
+        GameObject[] playerConnections = GetAllPlayerConnectionObjects();
+
+        //Find id of passed in player controller in array
+        int connectionID = 0;
+        for (int i = 0; i < playerControllers.Length; i++)
+        {
+            //If equal
+            if (playerController == playerControllers[i])
+            {
+                //Set id and break out of loop
+                connectionID = i;
+                break;
+            }
+        }
+
+        //Get item within array and return
+        PlayerConnectionObject connection = playerConnections[connectionID].GetComponent<PlayerConnectionObject>();
+        return connection;
     }
 }

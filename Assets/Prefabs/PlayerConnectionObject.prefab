@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7630715021527190116}
   m_Layer: 0
   m_Name: PlayerConnectionObject
-  m_TagString: Player
+  m_TagString: PlayerConnection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,3 +65,4 @@ MonoBehaviour:
   playerGameObjectPrefab: {fileID: 1141354017866550279, guid: f213c8f430d7a854997d0f5dca2c7499,
     type: 3}
   playerName: Player
+  playerGameObject: {fileID: 0}

@@ -8,12 +8,15 @@ public class PlayerConnectionObject : NetworkBehaviour
     public GameObject gameManager = null;
     public GameObject playerGameObjectPrefab = null;
     public string playerName = "Player";
-    GameObject playerGameObject = null;
+    public GameObject playerGameObject = null;
+
+    NetworkUtils netUtils = null;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController");
+        netUtils = gameManager.GetComponent<NetworkUtils>();
 
         if(isLocalPlayer == false)
         {
@@ -26,6 +29,7 @@ public class PlayerConnectionObject : NetworkBehaviour
 
         CmdSpawnPlayerGameObject();
         CmdUpdateEnvironment();
+        CmdChangePlayerName("Player" + Random.Range(1, 100));
     }
 
     // Update is called once per frame
@@ -39,6 +43,11 @@ public class PlayerConnectionObject : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             CmdChangePlayerName("Player" + Random.Range(1, 100));
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CmdResetPlayerConnections();
         }
     }
 
@@ -62,10 +71,16 @@ public class PlayerConnectionObject : NetworkBehaviour
         playerGameObject.transform.position = transform.position;
         playerGameObject.transform.rotation = transform.rotation;
 
-        RpcSetupNewPlayerConnection();
-
         //Spawn object on all clients
         NetworkServer.Spawn(playerGameObject, connectionToClient);
+
+        RpcResetPlayerConnection();
+    }
+
+    [Command]
+    public void CmdResetPlayerConnections()
+    {
+        RpcResetPlayerConnection();
     }
 
     //Command to change player name on server
@@ -86,17 +101,36 @@ public class PlayerConnectionObject : NetworkBehaviour
         RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windSpeed, controller.windAngle);
     }
 
+    [Command]
+    public void CmdToggleFlashLight()
+    {
+        Debug.Log("CMD: Toggle Flash Light");
+        PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
+        if (flashlight != null)
+        {
+            flashlight.flashLightStatus = !flashlight.flashLightStatus;
+            RpcUpdateFlashLightStatus(flashlight.flashLightStatus);
+        }
+    }
 
     /////////////////////////////// RPC ///////////////////////////////
     //RPCs are functions that are only executed on clients
 
     [ClientRpc]
-    void RpcSetupNewPlayerConnection()
+    void RpcResetPlayerConnection()
     {
         //Reset position to 0, 0, 0
         transform.position = new Vector3(0, 0, 0);
         //Reset rotation to 0, 0, 0
         transform.rotation = Quaternion.identity;
+
+        //TODO: Only working for players that join after this one joins, resolve this
+        GameObject[] playerConnectionObjects = netUtils.GetAllPlayerConnectionObjects();
+        GameObject[] playerObjects = netUtils.GetAllPlayerObjects();
+        for (int i = 0; i < playerConnectionObjects.Length; i++)
+        {
+            Debug.Log(playerConnectionObjects[i] + " - " + playerObjects[i]);
+        }
     }
 
     [ClientRpc]
@@ -106,6 +140,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         gameObject.name = "PlayerConnectionObject(" + newName + ")";
         //Setting manually as when a hook is used the local value does not get updated
         playerName = newName;
+        playerGameObject.name = "Player(" + newName + ")";
     }
 
     [ClientRpc]
@@ -119,5 +154,16 @@ public class PlayerConnectionObject : NetworkBehaviour
         controller.temperature = m_temperature;
         controller.windSpeed = m_windStrength;
         controller.windAngle = m_windAngle;
+    }
+
+    [ClientRpc]
+    void RpcUpdateFlashLightStatus(bool status)
+    {
+        Debug.Log("RPC: Update flash light" + status);
+        PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
+        if(flashlight != null)
+        {
+            flashlight.flashLightStatus = status;
+        }
     }
 }
