@@ -29,12 +29,6 @@ public class PlayerController : NetworkBehaviour
         gameManager = GameObject.FindGameObjectWithTag("GameController");
         netUtils = gameManager.GetComponent<NetworkUtils>();
         DisableCursor();
-
-        //PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
-        //if(host != null)
-        //{
-        //    host.CmdResetPlayerConnections();
-        //}
     }
 
     // Update is called once per frame

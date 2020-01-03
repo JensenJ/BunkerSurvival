@@ -124,12 +124,15 @@ public class PlayerConnectionObject : NetworkBehaviour
         //Reset rotation to 0, 0, 0
         transform.rotation = Quaternion.identity;
 
-        //TODO: Only working for players that join after this one joins, resolve this
         GameObject[] playerConnectionObjects = netUtils.GetAllPlayerConnectionObjects();
         GameObject[] playerObjects = netUtils.GetAllPlayerObjects();
+
+        //For every player connection
         for (int i = 0; i < playerConnectionObjects.Length; i++)
         {
-            Debug.Log(playerConnectionObjects[i] + " - " + playerObjects[i]);
+            //Link connection object to player object
+            PlayerConnectionObject playerConnection = playerConnectionObjects[i].GetComponent<PlayerConnectionObject>();
+            playerConnection.playerGameObject = playerObjects[i];
         }
     }
 
@@ -159,11 +162,10 @@ public class PlayerConnectionObject : NetworkBehaviour
     [ClientRpc]
     void RpcUpdateFlashLightStatus(bool status)
     {
-        Debug.Log("RPC: Update flash light" + status);
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if(flashlight != null)
         {
-            flashlight.flashLightStatus = status;
+            flashlight.ToggleFlashLight(status);
         }
     }
 }
