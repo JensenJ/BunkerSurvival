@@ -100,7 +100,8 @@ public class PlayerConnectionObject : NetworkBehaviour
         EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
         RpcUpdateEnvironment(controller.timeMultiplier, controller.currentTimeOfDay, controller.days, controller.secondsInFullDay, controller.temperature, controller.windSpeed, controller.windAngle);
     }
-
+    
+    //Command to toggle flashlight
     [Command]
     public void CmdToggleFlashLight()
     {
@@ -112,10 +113,22 @@ public class PlayerConnectionObject : NetworkBehaviour
             RpcUpdateFlashLightStatus(flashlight.flashLightStatus);
         }
     }
+
+    //Command to update player attributes
     [Command]
-    public void CmdUpdatePlayerAttributes()
+    public void CmdUpdatePlayerAttributes(float health, float maxHealth, float stamina, float maxStamina)
     {
         Debug.Log("CMD: Update Player Attributes");
+        PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
+        if(attributes != null)
+        {
+            attributes.health = health;
+            attributes.maxHealth = maxHealth;
+            attributes.stamina = stamina;
+            attributes.maxStamina = maxStamina;
+
+            RpcUpdatePlayerAttributes(attributes.health, attributes.maxHealth, attributes.stamina, attributes.maxStamina);
+        }
     }
 
     /////////////////////////////// RPC ///////////////////////////////
@@ -171,6 +184,19 @@ public class PlayerConnectionObject : NetworkBehaviour
         if(flashlight != null)
         {
             flashlight.ToggleFlashLight(status);
+        }
+    }
+
+    [ClientRpc]
+    void RpcUpdatePlayerAttributes(float health, float maxHealth, float stamina, float maxStamina)
+    {
+        PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
+        if(attributes != null)
+        {
+            attributes.health = health;
+            attributes.maxHealth = maxHealth;
+            attributes.stamina = stamina;
+            attributes.maxStamina = maxStamina;
         }
     }
 }

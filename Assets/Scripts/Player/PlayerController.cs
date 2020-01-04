@@ -6,6 +6,9 @@ using Mirror;
 //The player controller is a unit controlled by a player
 
 [RequireComponent(typeof(PlayerMotor))]
+[RequireComponent(typeof(PlayerSetup))]
+[RequireComponent(typeof(PlayerFlashLight))]
+[RequireComponent(typeof(PlayerAttributes))]
 public class PlayerController : NetworkBehaviour
 {
     public bool isCursorEnabled = false;
@@ -18,12 +21,14 @@ public class PlayerController : NetworkBehaviour
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
     PlayerMotor motor = null;
+    PlayerAttributes attributes = null;
 
     // Start is called before the first frame update
     void Start()
     {
         //Start settings
         motor = GetComponent<PlayerMotor>();
+        attributes = GetComponent<PlayerAttributes>();
         gameManager = GameObject.FindGameObjectWithTag("GameController");
         netUtils = gameManager.GetComponent<NetworkUtils>();
         DisableCursor();
@@ -60,6 +65,11 @@ public class PlayerController : NetworkBehaviour
             {
                 host.CmdToggleFlashLight();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            attributes.DamageHealth(10.0f);
         }
 
         //Movement
