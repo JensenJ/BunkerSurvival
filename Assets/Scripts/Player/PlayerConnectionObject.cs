@@ -112,6 +112,11 @@ public class PlayerConnectionObject : NetworkBehaviour
             RpcUpdateFlashLightStatus(flashlight.flashLightStatus);
         }
     }
+    [Command]
+    public void CmdUpdatePlayerAttributes()
+    {
+        Debug.Log("CMD: Update Player Attributes");
+    }
 
     /////////////////////////////// RPC ///////////////////////////////
     //RPCs are functions that are only executed on clients

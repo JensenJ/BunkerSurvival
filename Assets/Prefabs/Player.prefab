@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1141354017866550276}
   - component: {fileID: 8105985709092397544}
   - component: {fileID: 6485417962161998986}
+  - component: {fileID: -3759248526837700653}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -171,6 +172,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLight: {fileID: 0}
   flashLightStatus: 0
+--- !u!114 &-3759248526837700653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141354017866550279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a356f946760a545808bca5f20d841c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  stamina: 100
+  maxHealth: 100
+  maxStamina: 100
 --- !u!1 &1141354019429747489
 GameObject:
   m_ObjectHideFlags: 0

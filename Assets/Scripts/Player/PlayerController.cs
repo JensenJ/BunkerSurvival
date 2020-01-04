@@ -18,14 +18,12 @@ public class PlayerController : NetworkBehaviour
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
     PlayerMotor motor = null;
-    PlayerFlashLight flashlight = null;
 
     // Start is called before the first frame update
     void Start()
     {
         //Start settings
         motor = GetComponent<PlayerMotor>();
-        flashlight = GetComponent<PlayerFlashLight>();
         gameManager = GameObject.FindGameObjectWithTag("GameController");
         netUtils = gameManager.GetComponent<NetworkUtils>();
         DisableCursor();
