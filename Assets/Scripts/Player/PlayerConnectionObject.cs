@@ -122,10 +122,10 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if(attributes != null)
         {
-            attributes.health = health;
-            attributes.maxHealth = maxHealth;
-            attributes.stamina = stamina;
-            attributes.maxStamina = maxStamina;
+            attributes.health = attributes.GetHealth();
+            attributes.maxHealth = attributes.GetMaxHealth();
+            attributes.stamina = attributes.GetStamina();
+            attributes.maxStamina = attributes.GetMaxStamina();
 
             RpcUpdatePlayerAttributes(attributes.health, attributes.maxHealth, attributes.stamina, attributes.maxStamina);
         }

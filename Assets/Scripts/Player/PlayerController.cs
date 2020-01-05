@@ -18,6 +18,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
     [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
 
+    [Header("Attributes:")]
+    [SerializeField] [Range(0.0f, 1.0f)] public float staminaDrainSpeed = 0.25f;
+    [SerializeField] [Range(0.0f, 1.0f)] public float staminaRegenSpeed = 0.125f;
+
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
     PlayerMotor motor = null;
@@ -96,16 +100,34 @@ public class PlayerController : NetworkBehaviour
     void Move()
     {
         Vector3 velocity = Vector3.zero;
+        float moveSpeed = speed;
         //Checks whether player can move
         if (canMove)
         {
+            //If sprinting and stamina is above 10%
+            if (Input.GetButton("Sprint"))
+            {
+                attributes.DamageStamina(staminaDrainSpeed);
+                if(attributes.stamina / attributes.maxStamina >= 0.1f)
+                {
+                    moveSpeed = sprintSpeed;
+                }
+            }
+            else
+            {
+                if(attributes.stamina < attributes.maxStamina)
+                {
+                    attributes.HealStamina(staminaRegenSpeed);
+                }
+            }
+
             float xMove = Input.GetAxisRaw("Horizontal");
             float zMove = Input.GetAxisRaw("Vertical");
 
             Vector3 moveHorizontal = transform.right * xMove;
             Vector3 moveVertical = transform.forward * zMove;
 
-            velocity = (moveHorizontal + moveVertical).normalized * speed;
+            velocity = (moveHorizontal + moveVertical).normalized * moveSpeed;
         }
 
         motor.Move(velocity);

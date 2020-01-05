@@ -136,9 +136,11 @@ MonoBehaviour:
   isCursorEnabled: 0
   canMove: 1
   speed: 5
-  sprintSpeed: 7
-  sensitivity: 3
+  sprintSpeed: 8
+  sensitivity: 2
   jumpForce: 4
+  staminaDrainSpeed: 0.25
+  staminaRegenSpeed: 0.125
 --- !u!114 &8105985709092397544
 MonoBehaviour:
   m_ObjectHideFlags: 0

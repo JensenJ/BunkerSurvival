@@ -10,11 +10,11 @@ public class PlayerAttributes : MonoBehaviour
     [SerializeField] public float health = 100.0f;
     [SerializeField] public float stamina = 100.0f;
 
-    float lastHealth;
-    float lastStamina;
-
     [SerializeField] public float maxHealth = 100.0f;
     [SerializeField] public float maxStamina = 100.0f;
+
+    float lastHealth = 0;
+    float lastStamina = 0;
 
     // Start is called before the first frame update
     void Start()
