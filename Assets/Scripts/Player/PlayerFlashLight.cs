@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerFlashLight : MonoBehaviour
+public class PlayerFlashLight : NetworkBehaviour
 {
     [SerializeField] GameObject flashLight = null;
     [SerializeField] public bool flashLightStatus = false;

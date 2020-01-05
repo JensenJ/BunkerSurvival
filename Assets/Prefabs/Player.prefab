@@ -160,6 +160,7 @@ MonoBehaviour:
   - {fileID: 1141354017866550277}
   - {fileID: 1141354019429747493}
   - {fileID: 1141354019429747492}
+  - {fileID: -3759248526837700653}
 --- !u!114 &6485417962161998986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180d42591e515496fb9e98a91e8732fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   flashLight: {fileID: 0}
   flashLightStatus: 0
 --- !u!114 &-3759248526837700653
@@ -186,6 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a356f946760a545808bca5f20d841c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   health: 100
   stamina: 100
   maxHealth: 100

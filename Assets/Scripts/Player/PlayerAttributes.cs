@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerAttributes : MonoBehaviour
+public class PlayerAttributes : NetworkBehaviour
 {
     GameObject gameManager = null;
     NetworkUtils netUtils = null;
@@ -26,6 +27,11 @@ public class PlayerAttributes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!hasAuthority)
+        {
+            return;
+        }
+
         //Checking if health value is the same as last check value
         if (lastHealth != health)
         {
