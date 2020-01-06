@@ -13,6 +13,7 @@ public class PlayerSkillController : NetworkBehaviour
         return playerSkills;
     }
 
+    //Returns the skill data index at that location
     public PlayerSkillData GetSkillDataFromID(int id)
     {
         //If skill id is not valid
@@ -26,6 +27,7 @@ public class PlayerSkillController : NetworkBehaviour
         }
     }
 
+    //Checks whether the skill is of a valid id
     public bool IsValidSkill(int id)
     {
         for (int i = 0; i < playerSkills.Length; i++)
@@ -39,12 +41,13 @@ public class PlayerSkillController : NetworkBehaviour
     }
 }
 
+//Struct for player skills
 [System.Serializable]
 public struct PlayerSkillData
 {
     public string skillName;
     public string skillDescription;
-    public int skillID;
+    public int skillLevel;
+    public int maxSkillLevel;
     public int[] skillRequirementIDs;
-    public int skillCost;
 }

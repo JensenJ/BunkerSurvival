@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8105985709092397544}
   - component: {fileID: 6485417962161998986}
   - component: {fileID: -3759248526837700653}
+  - component: {fileID: -5673913219623698701}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -195,6 +196,23 @@ MonoBehaviour:
   stamina: 100
   maxHealth: 100
   maxStamina: 100
+--- !u!114 &-5673913219623698701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141354017866550279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18a4c6d66a38e147b3775cf614bd2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  skillController: {fileID: 0}
+  currentSkillPoints: 0
+  currentSkillIDLevels: 
 --- !u!1 &1141354019429747489
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,54 +9,48 @@ public class PlayerSkills : NetworkBehaviour
     [SerializeField] public PlayerSkillController skillController = null;
 
     [SerializeField] int currentSkillPoints = 0;
-    [SerializeField] List<int> currentSkillIDs = new List<int>();
+    [SerializeField] int[] currentSkillIDLevels = null;
+
+    PlayerSkillData[] allSkills = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(skillController != null || gameManager != null)
-        {
-            gameManager = GameObject.FindGameObjectWithTag("GameController");
-            skillController = gameManager.GetComponent<PlayerSkillController>();
-        }
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
+        skillController = gameManager.GetComponent<PlayerSkillController>();
+        allSkills = skillController.GetAllSkills();
+        currentSkillIDLevels = new int[allSkills.Length];
     }
 
-    //Adds a skill to players list
-    public void AddSkillID(int id)
+    //Increases skill level at the specified index
+    public void IncreaseSkillLevel(int skillID)
     {
-        //If the skill has a valid is and the player does NOT already have it
-        if (skillController.IsValidSkill(id) && !PlayerHasSkill(id))
+        if(currentSkillPoints > 0)
         {
-            currentSkillIDs.Add(id);
+            currentSkillPoints--;
+            currentSkillIDLevels[skillID]++;
         }
     }
-
-    //Removes a skill from players list
-    public void RemoveSkillID(int id)
+    
+    //Resets all skills and adds to skill point pool
+    public void ResetSkills()
     {
-        if (skillController.IsValidSkill(id) && PlayerHasSkill(id))
+        for (int i = 0; i < allSkills.Length; i++)
         {
-            currentSkillIDs.Remove(id);
+            currentSkillPoints += currentSkillIDLevels[i];
         }
+        currentSkillIDLevels = new int[allSkills.Length];
     }
 
-    //Function to find if the player possesses the skill id
-    public bool PlayerHasSkill(int id)
+    //Gets skill level at the specified index
+    public int GetPlayerSkillLevel(int skillID)
     {
-        for (int i = 0; i < currentSkillIDs.Count; i++)
-        {
-            if(id == currentSkillIDs[i])
-            {
-                return true;
-            }
-        }
-        return false;
+        return currentSkillIDLevels[skillID];
     }
 
-    //Returns all player skill ids
-    public int[] GetCurrentPlayerSkills()
+    public void LevelUp()
     {
-        return currentSkillIDs.ToArray();
+        currentSkillPoints++;
     }
 
     //Gets the current skill points of the player

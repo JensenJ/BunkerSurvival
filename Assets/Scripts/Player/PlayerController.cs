@@ -9,6 +9,7 @@ using Mirror;
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(PlayerFlashLight))]
 [RequireComponent(typeof(PlayerAttributes))]
+[RequireComponent(typeof(PlayerSkills))]
 public class PlayerController : NetworkBehaviour
 {
     public bool isCursorEnabled = false;
@@ -26,6 +27,7 @@ public class PlayerController : NetworkBehaviour
     GameObject gameManager = null;
     PlayerMotor motor = null;
     PlayerAttributes attributes = null;
+    PlayerSkills skills = null;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class PlayerController : NetworkBehaviour
         //Start settings
         motor = GetComponent<PlayerMotor>();
         attributes = GetComponent<PlayerAttributes>();
+        skills = GetComponent<PlayerSkills>();
         gameManager = GameObject.FindGameObjectWithTag("GameController");
         netUtils = gameManager.GetComponent<NetworkUtils>();
         DisableCursor();
@@ -73,9 +76,18 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            attributes.DamageHealth(10.0f);
+            skills.IncreaseSkillLevel(2);
         }
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            skills.LevelUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            skills.ResetSkills();
+        }
         //Movement
         Move();
         Rotate();

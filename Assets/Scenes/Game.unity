@@ -2101,6 +2101,7 @@ GameObject:
   - component: {fileID: 450970655}
   - component: {fileID: 450970656}
   - component: {fileID: 450970653}
+  - component: {fileID: 450970657}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -2181,6 +2182,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2466ac0651692cf47b6ec597e375b9a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &450970657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450970652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61dac2baf7a3b349a7909db80f5e508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  playerSkills:
+  - skillName: Higher Health
+    skillDescription: Health is 5 points greater than before
+    skillID: 0
+    maxSkillLevel: 10
+    skillRequirementIDs: 
+  - skillName: Higher Stamina
+    skillDescription: Stamina is 5 points greater than before
+    skillID: 1
+    maxSkillLevel: 10
+    skillRequirementIDs: 
+  - skillName: Faster Movement
+    skillDescription: Movement speed increased by 2% per level
+    skillID: 2
+    maxSkillLevel: 5
+    skillRequirementIDs: 
 --- !u!1001 &471951002
 PrefabInstance:
   m_ObjectHideFlags: 0
