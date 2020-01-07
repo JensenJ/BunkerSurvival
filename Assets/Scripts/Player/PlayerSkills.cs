@@ -13,13 +13,26 @@ public class PlayerSkills : NetworkBehaviour
 
     PlayerSkillData[] allSkills = null;
 
+    NetworkUtils netUtils = null; 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController");
+        netUtils = gameManager.GetComponent<NetworkUtils>();
         skillController = gameManager.GetComponent<PlayerSkillController>();
         allSkills = skillController.GetAllSkills();
         currentSkillIDLevels = new int[allSkills.Length];
+    }
+
+    //Function to update the skill points across the network.
+    void UpdateSkillPoints()
+    {
+        //Update environment
+        PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
+        if (host != null)
+        {
+            host.CmdUpdatePlayerSkillPoints(currentSkillPoints, currentSkillIDLevels);
+        }
     }
 
     //Increases skill level at the specified index
@@ -29,6 +42,7 @@ public class PlayerSkills : NetworkBehaviour
         {
             currentSkillPoints--;
             currentSkillIDLevels[skillID]++;
+            UpdateSkillPoints();
         }
     }
     
@@ -40,6 +54,14 @@ public class PlayerSkills : NetworkBehaviour
             currentSkillPoints += currentSkillIDLevels[i];
         }
         currentSkillIDLevels = new int[allSkills.Length];
+        UpdateSkillPoints();
+    }
+
+    //Setter for skill points
+    public void SetPlayerSkillPoints(int[] skillPoints, int skillPointCount)
+    {
+        currentSkillIDLevels = skillPoints;
+        currentSkillPoints = skillPointCount;
     }
 
     //Gets skill level at the specified index
@@ -51,6 +73,7 @@ public class PlayerSkills : NetworkBehaviour
     public void LevelUp()
     {
         currentSkillPoints++;
+        UpdateSkillPoints();
     }
 
     //Gets the current skill points of the player

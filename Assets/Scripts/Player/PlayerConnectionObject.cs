@@ -130,10 +130,25 @@ public class PlayerConnectionObject : NetworkBehaviour
             RpcUpdatePlayerAttributes(attributes.health, attributes.maxHealth, attributes.stamina, attributes.maxStamina);
         }
     }
+    
+    //Command to update player skills points
+    [Command]
+    public void CmdUpdatePlayerSkillPoints(int newSkillPointCount, int[] playerSkillPoints)
+    {
+        Debug.Log("CMD: Update Player Skillpoints");
+        PlayerSkills playerSkills = playerGameObject.GetComponent<PlayerSkills>();
+        if(playerSkills != null)
+        {
+            playerSkills.SetPlayerSkillPoints(playerSkillPoints, newSkillPointCount);
+
+            RpcUpdatePlayerSkillPoints(newSkillPointCount, playerSkillPoints);
+        }
+    }
 
     /////////////////////////////// RPC ///////////////////////////////
     //RPCs are functions that are only executed on clients
 
+    //RPC to setup player connections and get the correct game object for that connection object
     [ClientRpc]
     void RpcResetPlayerConnection()
     {
@@ -154,6 +169,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         }
     }
 
+    //RPC to set the player name
     [ClientRpc]
     void RpcChangePlayerName(string newName)
     {
@@ -164,6 +180,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         playerGameObject.name = "Player(" + newName + ")";
     }
 
+    //Rpc to update environment controller data
     [ClientRpc]
     void RpcUpdateEnvironment(float m_timeMultiplier, float m_currentTime, int m_days, float m_secondsInFullDay, float m_temperature, float m_windStrength, float m_windAngle)
     {
@@ -177,6 +194,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         controller.windAngle = m_windAngle;
     }
 
+    //RPC to set the flash light status
     [ClientRpc]
     void RpcUpdateFlashLightStatus(bool status)
     {
@@ -187,6 +205,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         }
     }
 
+    //RPC to update player attributes such as health
     [ClientRpc]
     void RpcUpdatePlayerAttributes(float health, float maxHealth, float stamina, float maxStamina)
     {
@@ -197,6 +216,17 @@ public class PlayerConnectionObject : NetworkBehaviour
             attributes.maxHealth = maxHealth;
             attributes.stamina = stamina;
             attributes.maxStamina = maxStamina;
+        }
+    }
+
+    //RPC to update player skill points
+    [ClientRpc]
+    public void RpcUpdatePlayerSkillPoints(int newSkillPointCount, int[] playerSkillPoints)
+    {
+        PlayerSkills playerSkills = playerGameObject.GetComponent<PlayerSkills>();
+        if (playerSkills != null)
+        {
+            playerSkills.SetPlayerSkillPoints(playerSkillPoints, newSkillPointCount);
         }
     }
 }
