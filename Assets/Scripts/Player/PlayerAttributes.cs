@@ -8,14 +8,17 @@ public class PlayerAttributes : NetworkBehaviour
     GameObject gameManager = null;
     NetworkUtils netUtils = null;
 
-    [SerializeField] public float health = 100.0f;
-    [SerializeField] public float stamina = 100.0f;
+    [SerializeField] float health = 100.0f;
+    [SerializeField] float stamina = 100.0f;
 
-    [SerializeField] public float maxHealth = 100.0f;
-    [SerializeField] public float maxStamina = 100.0f;
+    [SerializeField] float maxHealth = 100.0f;
+    [SerializeField] float maxStamina = 100.0f;
 
     float lastHealth = 0;
+    float lastMaxHealth = 0;
     float lastStamina = 0;
+    float lastMaxStamina = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,34 +40,49 @@ public class PlayerAttributes : NetworkBehaviour
         {
             //Clamp value
             health = Mathf.Clamp(health, 0.0f, maxHealth);
-
-            //Get host
-            PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
-            if (host != null)
-            {
-                //run command on host
-                host.CmdUpdatePlayerAttributes(health, maxHealth, stamina, maxStamina);
-            }
-
+            UpdateAttributes();
             //set last health equal to new health
             lastHealth = health;
         }
+
+        //Checking if max health value is the same as last check value
+        if(lastMaxHealth != maxHealth)
+        {
+            maxHealth = Mathf.Clamp(maxHealth, 0.0f, maxHealth);
+            UpdateAttributes();
+            //Set last max health equal to new max health
+            lastMaxHealth = maxHealth;
+        }
+
         //Checking if stamina value is the same as last check value
         if (lastStamina != stamina)
         {
             //Clamp value
             stamina = Mathf.Clamp(stamina, 0.0f, maxStamina);
-
-            //Get host
-            PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
-            if (host != null)
-            {
-                //run command on host
-                host.CmdUpdatePlayerAttributes(health, maxHealth, stamina, maxStamina);
-            }
-
+            UpdateAttributes();
             //set last stamina equal to new stamina
             lastStamina = stamina;
+        }
+
+        //Checking if max stamina value is the same as last check value
+        if(lastMaxStamina != maxStamina)
+        {
+            maxStamina = Mathf.Clamp(maxStamina, 0.0f, maxStamina);
+            UpdateAttributes();
+            //Set last max stamina equal to new max stamina
+            lastMaxStamina = maxStamina;
+        }
+    }
+
+    //Function to apply attributes across the network
+    void UpdateAttributes()
+    {
+        //Get host
+        PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
+        if (host != null)
+        {
+            //run command on host
+            host.CmdUpdatePlayerAttributes(health, maxHealth, stamina, maxStamina);
         }
     }
 
@@ -88,6 +106,24 @@ public class PlayerAttributes : NetworkBehaviour
     public void HealStamina(float amount)
     {
         stamina += amount;
+    }
+
+    //SETTERS
+    public void SetHealth(float newHealth)
+    {
+        health = newHealth;
+    }
+    public void SetMaxHealth(float newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+    }
+    public void SetStamina(float newStamina)
+    {
+        stamina = newStamina;
+    }
+    public void SetMaxStamina(float newMaxStamina)
+    {
+        maxStamina = newMaxStamina;
     }
 
     //GETTERS

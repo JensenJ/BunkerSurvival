@@ -28,8 +28,6 @@ public class PlayerConnectionObject : NetworkBehaviour
         Debug.Log("PlayerObject::Start - Spawning player game object");
 
         CmdSpawnPlayerGameObject();
-        CmdUpdateEnvironment();
-        CmdChangePlayerName("Player" + Random.Range(1, 100));
     }
 
     // Update is called once per frame
@@ -54,6 +52,20 @@ public class PlayerConnectionObject : NetworkBehaviour
     void OnDestroy()
     {
         Destroy(playerGameObject);
+    }
+
+    //Function to update all commands and refresh all clients, useful for when a new player joins
+    void Resync()
+    {
+        CmdUpdateEnvironment();
+        CmdChangePlayerName("Player" + Random.Range(1, 100));
+        CmdUpdatePlayerSkillPoints();
+        CmdUpdateFlashLightStatus();
+        PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
+        if (attributes != null)
+        {
+            CmdUpdatePlayerAttributes(attributes.GetHealth(), attributes.GetMaxHealth(), attributes.GetStamina(), attributes.GetMaxStamina());
+        }
     }
 
     /////////////////////////////// COMMANDS ///////////////////////////////
@@ -103,13 +115,12 @@ public class PlayerConnectionObject : NetworkBehaviour
     
     //Command to toggle flashlight
     [Command]
-    public void CmdToggleFlashLight()
+    public void CmdUpdateFlashLightStatus()
     {
-        Debug.Log("CMD: Toggle Flash Light");
+        Debug.Log("CMD: Update Flash Light");
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
-            flashlight.flashLightStatus = !flashlight.flashLightStatus;
             RpcUpdateFlashLightStatus(flashlight.flashLightStatus);
         }
     }
@@ -122,31 +133,32 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if(attributes != null)
         {
-            attributes.health = health;
-            attributes.maxHealth = maxHealth;
-            attributes.stamina = stamina;
-            attributes.maxStamina = maxStamina;
+            attributes.SetHealth(health);
+            attributes.SetMaxHealth(maxHealth);
+            attributes.SetStamina(stamina);
+            attributes.SetMaxStamina(maxStamina);
 
-            RpcUpdatePlayerAttributes(attributes.health, attributes.maxHealth, attributes.stamina, attributes.maxStamina);
+            RpcUpdatePlayerAttributes(health, maxHealth, stamina, maxStamina);
         }
     }
     
     //Command to update player skills points
     [Command]
-    public void CmdUpdatePlayerSkillPoints(int newSkillPointCount, int[] playerSkillPoints)
+    public void CmdUpdatePlayerSkillPoints()
     {
         Debug.Log("CMD: Update Player Skillpoints");
         PlayerSkills playerSkills = playerGameObject.GetComponent<PlayerSkills>();
         if(playerSkills != null)
         {
-            playerSkills.SetPlayerSkillPoints(playerSkillPoints, newSkillPointCount);
+            int[] playerSkillPoints = playerSkills.GetPlayerSkills();
+            int newSkillPointCount = playerSkills.GetCurrentSkillPoint();
 
             RpcUpdatePlayerSkillPoints(newSkillPointCount, playerSkillPoints);
         }
     }
 
     /////////////////////////////// RPC ///////////////////////////////
-    //RPCs are functions that are only executed on clients
+    //RPCs (remote procedure calls) are functions that are only executed on clients
 
     //RPC to setup player connections and get the correct game object for that connection object
     [ClientRpc]
@@ -166,6 +178,10 @@ public class PlayerConnectionObject : NetworkBehaviour
             //Link connection object to player object
             PlayerConnectionObject playerConnection = playerConnectionObjects[i].GetComponent<PlayerConnectionObject>();
             playerConnection.playerGameObject = playerObjects[i];
+            if(playerConnection.isLocalPlayer == true)
+            {
+                playerConnection.Resync();
+            }
         }
     }
 
@@ -212,10 +228,10 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if(attributes != null)
         {
-            attributes.health = health;
-            attributes.maxHealth = maxHealth;
-            attributes.stamina = stamina;
-            attributes.maxStamina = maxStamina;
+            attributes.SetHealth(health);
+            attributes.SetMaxHealth(maxHealth);
+            attributes.SetStamina(stamina);
+            attributes.SetMaxStamina(maxStamina);
         }
     }
 

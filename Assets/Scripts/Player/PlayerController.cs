@@ -26,6 +26,7 @@ public class PlayerController : NetworkBehaviour
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
     PlayerMotor motor = null;
+    PlayerFlashLight flashLight = null;
     PlayerAttributes attributes = null;
     PlayerSkills skills = null;
 
@@ -34,6 +35,7 @@ public class PlayerController : NetworkBehaviour
     {
         //Start settings
         motor = GetComponent<PlayerMotor>();
+        flashLight = GetComponent<PlayerFlashLight>();
         attributes = GetComponent<PlayerAttributes>();
         skills = GetComponent<PlayerSkills>();
         gameManager = GameObject.FindGameObjectWithTag("GameController");
@@ -67,10 +69,11 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
+            flashLight.flashLightStatus = !flashLight.flashLightStatus;
             PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
             if(host != null)
             {
-                host.CmdToggleFlashLight();
+                host.CmdUpdateFlashLightStatus();
             }
         }
 
@@ -120,14 +123,14 @@ public class PlayerController : NetworkBehaviour
             if (Input.GetButton("Sprint"))
             {
                 attributes.DamageStamina(staminaDrainSpeed);
-                if(attributes.stamina / attributes.maxStamina >= 0.1f)
+                if(attributes.GetStamina() / attributes.GetMaxStamina() >= 0.1f)
                 {
                     moveSpeed = sprintSpeed;
                 }
             }
             else
             {
-                if(attributes.stamina < attributes.maxStamina)
+                if(attributes.GetStamina() < attributes.GetMaxStamina())
                 {
                     attributes.HealStamina(staminaRegenSpeed);
                 }

@@ -15,7 +15,7 @@ public class PlayerSkills : NetworkBehaviour
 
     NetworkUtils netUtils = null; 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController");
         netUtils = gameManager.GetComponent<NetworkUtils>();
@@ -31,7 +31,7 @@ public class PlayerSkills : NetworkBehaviour
         PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
         if (host != null)
         {
-            host.CmdUpdatePlayerSkillPoints(currentSkillPoints, currentSkillIDLevels);
+            host.CmdUpdatePlayerSkillPoints();
         }
     }
 
@@ -68,6 +68,11 @@ public class PlayerSkills : NetworkBehaviour
     public int GetPlayerSkillLevel(int skillID)
     {
         return currentSkillIDLevels[skillID];
+    }
+
+    public int[] GetPlayerSkills()
+    {
+        return currentSkillIDLevels;
     }
 
     public void LevelUp()
