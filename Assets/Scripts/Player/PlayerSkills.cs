@@ -14,7 +14,8 @@ public class PlayerSkills : NetworkBehaviour
     PlayerSkillData[] allSkills = null;
 
     NetworkUtils netUtils = null; 
-    // Start is called before the first frame update
+
+    //Creates current skill id levels
     void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController");
@@ -36,13 +37,34 @@ public class PlayerSkills : NetworkBehaviour
     }
 
     //Increases skill level at the specified index
-    public void IncreaseSkillLevel(int skillID)
+    public void IncreaseSkillLevel(PlayerSkill skill)
     {
         if(currentSkillPoints > 0)
         {
-            currentSkillPoints--;
-            currentSkillIDLevels[skillID]++;
-            UpdateSkillPoints();
+            //Get requirements for the skill to increase level to
+            int skillID = skillController.GetSkillIDFromType(skill);
+
+            PlayerSkill[] requirements = allSkills[skillID].skillRequirements;
+
+            bool valid = true;
+            //Check if the player possesses the required skills before applying
+            for (int i = 0; i < requirements.Length; i++)
+            {
+                int skillIndex = skillController.GetSkillIDFromType(requirements[i]);
+                //If they do not possess the skill
+                if (currentSkillIDLevels[skillIndex] <= 0)
+                {
+                    valid = false;
+                }
+            }
+            //If all criteria are met
+            if(valid == true)
+            {
+                //Apply skill level increase
+                currentSkillPoints--;
+                currentSkillIDLevels[skillID]++;
+                UpdateSkillPoints();
+            }
         }
     }
     

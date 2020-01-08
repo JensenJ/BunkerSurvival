@@ -47,7 +47,7 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         //Check that this is owned by player
-        if(hasAuthority == false)
+        if (hasAuthority == false)
         {
             return;
         }
@@ -71,23 +71,33 @@ public class PlayerController : NetworkBehaviour
         {
             flashLight.flashLightStatus = !flashLight.flashLightStatus;
             PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
-            if(host != null)
+            if (host != null)
             {
                 host.CmdUpdateFlashLightStatus();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            skills.IncreaseSkillLevel(2);
+            skills.IncreaseSkillLevel(PlayerSkill.IncreasedHealth);
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            skills.IncreaseSkillLevel(PlayerSkill.IncreasedStamina);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            skills.IncreaseSkillLevel(PlayerSkill.FasterMovement);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             skills.LevelUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             skills.ResetSkills();
         }
@@ -123,14 +133,14 @@ public class PlayerController : NetworkBehaviour
             if (Input.GetButton("Sprint"))
             {
                 attributes.DamageStamina(staminaDrainSpeed);
-                if(attributes.GetStamina() / attributes.GetMaxStamina() >= 0.1f)
+                if (attributes.GetStamina() / attributes.GetMaxStamina() >= 0.1f)
                 {
                     moveSpeed = sprintSpeed;
                 }
             }
             else
             {
-                if(attributes.GetStamina() < attributes.GetMaxStamina())
+                if (attributes.GetStamina() < attributes.GetMaxStamina())
                 {
                     attributes.HealStamina(staminaRegenSpeed);
                 }

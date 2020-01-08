@@ -2197,21 +2197,26 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerSkills:
-  - skillName: Higher Health
+  - skillType: 1
     skillDescription: Health is 5 points greater than before
-    skillID: 0
+    skillLevel: 0
     maxSkillLevel: 10
-    skillRequirementIDs: 
-  - skillName: Higher Stamina
+    skillRequirements: 
+  - skillType: 2
     skillDescription: Stamina is 5 points greater than before
-    skillID: 1
+    skillLevel: 0
     maxSkillLevel: 10
-    skillRequirementIDs: 
-  - skillName: Faster Movement
+    skillRequirements: 
+  - skillType: 3
     skillDescription: Movement speed increased by 2% per level
-    skillID: 2
+    skillLevel: 0
     maxSkillLevel: 5
-    skillRequirementIDs: 
+    skillRequirements: 02000000
+  - skillType: 4
+    skillDescription: Flashlight battery duration increased by 2% per level
+    skillLevel: 0
+    maxSkillLevel: 5
+    skillRequirements: 
 --- !u!1001 &471951002
 PrefabInstance:
   m_ObjectHideFlags: 0

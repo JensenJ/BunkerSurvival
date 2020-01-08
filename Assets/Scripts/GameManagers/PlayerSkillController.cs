@@ -13,18 +13,18 @@ public class PlayerSkillController : NetworkBehaviour
         return playerSkills;
     }
 
-    //Returns the skill data index at that location
-    public PlayerSkillData GetSkillDataFromID(int id)
+    //Returns skill id based on first entry of skill type, (all skills types should be unique to that skill)
+    public int GetSkillIDFromType(PlayerSkill playerSkill)
     {
-        //If skill id is not valid
-        if(playerSkills.Length > id || id < 0)
+        //for every skill
+        for (int i = 0; i < playerSkills.Length; i++)
         {
-            return playerSkills[0];
+            if (playerSkills[i].skillType == playerSkill)
+            {
+                return i;
+            }
         }
-        else
-        {
-            return playerSkills[id];
-        }
+        return 0;
     }
 
     //Checks whether the skill is of a valid id
@@ -40,14 +40,23 @@ public class PlayerSkillController : NetworkBehaviour
         return false;
     }
 }
+[System.Serializable]
+public enum PlayerSkill 
+{ 
+    None,
+    IncreasedHealth,
+    IncreasedStamina,
+    FasterMovement,
+    FlashlightEfficiency
+}
 
 //Struct for player skills
 [System.Serializable]
 public struct PlayerSkillData
 {
-    public string skillName;
+    public PlayerSkill skillType;
     public string skillDescription;
     public int skillLevel;
     public int maxSkillLevel;
-    public int[] skillRequirementIDs;
+    public PlayerSkill[] skillRequirements;
 }
