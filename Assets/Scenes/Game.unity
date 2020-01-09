@@ -2198,12 +2198,12 @@ MonoBehaviour:
   syncInterval: 0.1
   playerSkills:
   - skillType: 1
-    skillDescription: Health is 5 points greater than before
+    skillDescription: Health increased by 5% per level
     skillLevel: 0
     maxSkillLevel: 10
     skillRequirements: 
   - skillType: 2
-    skillDescription: Stamina is 5 points greater than before
+    skillDescription: Stamina increased by 5% per level
     skillLevel: 0
     maxSkillLevel: 10
     skillRequirements: 

@@ -70,11 +70,7 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             flashLight.flashLightStatus = !flashLight.flashLightStatus;
-            PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
-            if (host != null)
-            {
-                host.CmdUpdateFlashLightStatus();
-            }
+            flashLight.UpdateFlashLightStatus();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))

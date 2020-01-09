@@ -19,7 +19,6 @@ public class PlayerAttributes : NetworkBehaviour
     float lastStamina = 0;
     float lastMaxStamina = 0;
 
-
     // Start is called before the first frame update
     void Start()
     {

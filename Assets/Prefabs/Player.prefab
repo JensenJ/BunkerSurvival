@@ -178,6 +178,10 @@ MonoBehaviour:
   syncInterval: 0.1
   flashLight: {fileID: 0}
   flashLightStatus: 0
+  flashLightBattery: 100
+  flashLightMaxBattery: 100
+  flashLightRechargeRate: 0.05
+  flashLightDrainRate: 0.1
 --- !u!114 &-3759248526837700653
 MonoBehaviour:
   m_ObjectHideFlags: 0

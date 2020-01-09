@@ -89,6 +89,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         RpcResetPlayerConnection();
     }
 
+    //Command to reset player connections
     [Command]
     public void CmdResetPlayerConnections()
     {
@@ -121,7 +122,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
-            RpcUpdateFlashLightStatus(flashlight.flashLightStatus);
+            RpcUpdateFlashLightStatus(flashlight.flashLightStatus, flashlight.flashLightBattery, flashlight.flashLightMaxBattery);
         }
     }
 
@@ -212,12 +213,14 @@ public class PlayerConnectionObject : NetworkBehaviour
 
     //RPC to set the flash light status
     [ClientRpc]
-    void RpcUpdateFlashLightStatus(bool status)
+    void RpcUpdateFlashLightStatus(bool status, float flashLightBattery, float maxFlashLightBattery)
     {
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if(flashlight != null)
         {
             flashlight.ToggleFlashLight(status);
+            flashlight.SetFlashLightCharge(flashLightBattery);
+            flashlight.SetMaxFlashLightCharge(maxFlashLightBattery);
         }
     }
 
