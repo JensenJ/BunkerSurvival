@@ -60,7 +60,13 @@ public class PlayerConnectionObject : NetworkBehaviour
         CmdUpdateEnvironment();
         CmdChangePlayerName("Player" + Random.Range(1, 100));
         CmdUpdatePlayerSkillPoints();
-        CmdUpdateFlashLightStatus();
+
+        PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
+        if(flashlight != null)
+        {
+            CmdUpdateFlashLightStatus(flashlight.flashLightStatus, flashlight.GetFlashLightCharge(), flashlight.GetMaxFlashLightCharge());
+        }
+
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if (attributes != null)
         {
@@ -116,13 +122,13 @@ public class PlayerConnectionObject : NetworkBehaviour
     
     //Command to toggle flashlight
     [Command]
-    public void CmdUpdateFlashLightStatus()
+    public void CmdUpdateFlashLightStatus(bool flashLightStatus, float flashLightBattery, float flashLightMaxBattery)
     {
         Debug.Log("CMD: Update Flash Light");
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
-            RpcUpdateFlashLightStatus(flashlight.flashLightStatus, flashlight.flashLightBattery, flashlight.flashLightMaxBattery);
+            RpcUpdateFlashLightStatus(flashLightStatus, flashLightBattery, flashLightMaxBattery);
         }
     }
 

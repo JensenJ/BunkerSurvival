@@ -86,7 +86,7 @@ public class PlayerFlashLight : NetworkBehaviour
         PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
         if (host != null)
         {
-            host.CmdUpdateFlashLightStatus();
+            host.CmdUpdateFlashLightStatus(flashLightStatus, flashLightBattery, flashLightMaxBattery);
         }
     }
 
