@@ -64,7 +64,8 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if(flashlight != null)
         {
-            CmdUpdateFlashLightStatus(flashlight.flashLightStatus, flashlight.GetFlashLightCharge(), flashlight.GetMaxFlashLightCharge());
+            CmdUpdateFlashLightStatus(flashlight.flashLightStatus);
+            CmdUpdateFlashLightBattery(flashlight.GetFlashLightCharge(), flashlight.GetMaxFlashLightCharge());
         }
 
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
@@ -122,13 +123,28 @@ public class PlayerConnectionObject : NetworkBehaviour
     
     //Command to toggle flashlight
     [Command]
-    public void CmdUpdateFlashLightStatus(bool flashLightStatus, float flashLightBattery, float flashLightMaxBattery)
+    public void CmdUpdateFlashLightStatus(bool flashLightStatus)
     {
-        Debug.Log("CMD: Update Flash Light");
+        Debug.Log("CMD: Update Flash Light Status");
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
-            RpcUpdateFlashLightStatus(flashLightStatus, flashLightBattery, flashLightMaxBattery);
+            RpcUpdateFlashLightStatus(flashLightStatus);
+        }
+    }
+
+    //Command to update flashlight battery info
+    [Command]
+    public void CmdUpdateFlashLightBattery(float flashLightBattery, float flashLightMaxBattery)
+    {
+        Debug.Log("CMD: Update Flash Light Battery");
+        PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
+        if (flashlight != null)
+        {
+            flashlight.SetFlashLightCharge(flashLightBattery);
+            flashlight.SetMaxFlashLightCharge(flashLightMaxBattery);
+
+            RpcUpdateFlashLightBattery(flashLightBattery, flashLightMaxBattery);
         }
     }
 
@@ -219,16 +235,27 @@ public class PlayerConnectionObject : NetworkBehaviour
 
     //RPC to set the flash light status
     [ClientRpc]
-    void RpcUpdateFlashLightStatus(bool status, float flashLightBattery, float maxFlashLightBattery)
+    void RpcUpdateFlashLightStatus(bool status)
     {
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if(flashlight != null)
         {
             flashlight.ToggleFlashLight(status);
-            flashlight.SetFlashLightCharge(flashLightBattery);
-            flashlight.SetMaxFlashLightCharge(maxFlashLightBattery);
         }
     }
+
+    //RPC to update flash light battery
+    [ClientRpc]
+    void RpcUpdateFlashLightBattery(float flashLightBattery, float flashLightMaxBattery)
+    {
+        PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
+        if (flashlight != null)
+        {
+            flashlight.SetFlashLightCharge(flashLightBattery);
+            flashlight.SetMaxFlashLightCharge(flashLightMaxBattery);
+        }
+    }
+
 
     //RPC to update player attributes such as health
     [ClientRpc]

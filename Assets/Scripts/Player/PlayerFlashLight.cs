@@ -14,8 +14,8 @@ public class PlayerFlashLight : NetworkBehaviour
     float lastBattery = 0.0f;
     float lastMaxBattery = 0.0f;
 
-    [SerializeField] public float flashLightRechargeRate = 0.05f;
-    [SerializeField] public float flashLightDrainRate = 0.1f;
+    [SerializeField] public float flashLightRechargeRate = 5f;
+    [SerializeField] public float flashLightDrainRate = 3f;
 
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
@@ -45,7 +45,7 @@ public class PlayerFlashLight : NetworkBehaviour
         {
             //Clamp value
             flashLightBattery = Mathf.Clamp(flashLightBattery, 0.0f, flashLightMaxBattery);
-            UpdateFlashLightStatus();
+            UpdateFlashLightBattery();
             //set last battery equal to new battery
             lastBattery = flashLightBattery;
         }
@@ -55,7 +55,7 @@ public class PlayerFlashLight : NetworkBehaviour
         {
             //Clamp value
             flashLightMaxBattery = Mathf.Clamp(flashLightMaxBattery, 0.0f, flashLightMaxBattery);
-            UpdateFlashLightStatus();
+            UpdateFlashLightBattery();
             //set last max battery equal to new max battery
             lastMaxBattery = flashLightMaxBattery;
         }
@@ -64,7 +64,7 @@ public class PlayerFlashLight : NetworkBehaviour
         //If flashlight is on, drain it
         if(flashLightStatus == true)
         {
-            DrainFlashLight(flashLightDrainRate);
+            DrainFlashLight(flashLightDrainRate * Time.deltaTime);
             if(flashLightBattery <= 0.0f)
             {
                 ToggleFlashLight(false);
@@ -73,9 +73,9 @@ public class PlayerFlashLight : NetworkBehaviour
         //Otherwise, recharge it
         else
         {
-            if(flashLightBattery < flashLightMaxBattery)
+            if(GetFlashLightCharge() < GetMaxFlashLightCharge())
             {
-                RechargeFlashLight(flashLightRechargeRate);
+                RechargeFlashLight(flashLightRechargeRate * Time.deltaTime);
             }
         }
     }
@@ -86,7 +86,17 @@ public class PlayerFlashLight : NetworkBehaviour
         PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
         if (host != null)
         {
-            host.CmdUpdateFlashLightStatus(flashLightStatus, flashLightBattery, flashLightMaxBattery);
+            host.CmdUpdateFlashLightStatus(flashLightStatus);
+        }
+    }
+
+    //Function to update flash light battery across the network.
+    public void UpdateFlashLightBattery()
+    {
+        PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
+        if (host != null)
+        {
+            host.CmdUpdateFlashLightBattery(flashLightBattery, flashLightMaxBattery);
         }
     }
 
@@ -129,5 +139,10 @@ public class PlayerFlashLight : NetworkBehaviour
     public float GetMaxFlashLightCharge()
     {
         return flashLightMaxBattery;
+    }
+
+    public bool GetFlashLightStatus()
+    {
+        return flashLightStatus;
     }
 }

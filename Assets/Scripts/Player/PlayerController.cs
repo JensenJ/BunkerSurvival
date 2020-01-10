@@ -20,8 +20,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
 
     [Header("Attributes:")]
-    [SerializeField] [Range(0.0f, 1.0f)] public float staminaDrainSpeed = 0.25f;
-    [SerializeField] [Range(0.0f, 1.0f)] public float staminaRegenSpeed = 0.125f;
+    [SerializeField] [Range(0.0f, 10.0f)] public float staminaDrainSpeed = 2.5f;
+    [SerializeField] [Range(0.0f, 7.0f)] public float staminaRegenSpeed = 1.25f;
 
     NetworkUtils netUtils = null;
     GameObject gameManager = null;
@@ -128,7 +128,7 @@ public class PlayerController : NetworkBehaviour
             //If sprinting and stamina is above 10%
             if (Input.GetButton("Sprint"))
             {
-                attributes.DamageStamina(staminaDrainSpeed);
+                attributes.DamageStamina(staminaDrainSpeed * Time.deltaTime);
                 if (attributes.GetStamina() / attributes.GetMaxStamina() >= 0.1f)
                 {
                     moveSpeed = sprintSpeed;
@@ -138,7 +138,7 @@ public class PlayerController : NetworkBehaviour
             {
                 if (attributes.GetStamina() < attributes.GetMaxStamina())
                 {
-                    attributes.HealStamina(staminaRegenSpeed);
+                    attributes.HealStamina(staminaRegenSpeed * Time.deltaTime);
                 }
             }
 

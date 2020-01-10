@@ -140,8 +140,8 @@ MonoBehaviour:
   sprintSpeed: 8
   sensitivity: 2
   jumpForce: 4
-  staminaDrainSpeed: 0.25
-  staminaRegenSpeed: 0.125
+  staminaDrainSpeed: 10
+  staminaRegenSpeed: 7
 --- !u!114 &8105985709092397544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   - {fileID: 1141354019429747493}
   - {fileID: 1141354019429747492}
   - {fileID: -3759248526837700653}
+  - {fileID: 6485417962161998986}
 --- !u!114 &6485417962161998986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,8 +181,8 @@ MonoBehaviour:
   flashLightStatus: 0
   flashLightBattery: 100
   flashLightMaxBattery: 100
-  flashLightRechargeRate: 0.05
-  flashLightDrainRate: 0.1
+  flashLightRechargeRate: 2
+  flashLightDrainRate: 5
 --- !u!114 &-3759248526837700653
 MonoBehaviour:
   m_ObjectHideFlags: 0
