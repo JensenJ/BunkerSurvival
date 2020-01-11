@@ -140,6 +140,8 @@ MonoBehaviour:
   sprintSpeed: 8
   sensitivity: 2
   jumpForce: 4
+  baseSpeed: 5
+  baseSprintSpeed: 7
   staminaDrainSpeed: 10
   staminaRegenSpeed: 7
 --- !u!114 &8105985709092397544
@@ -232,7 +234,7 @@ GameObject:
   - component: {fileID: 1141354019429747495}
   m_Layer: 9
   m_Name: PlayerCam
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

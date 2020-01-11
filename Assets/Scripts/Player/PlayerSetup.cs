@@ -5,7 +5,7 @@ public class PlayerSetup : NetworkBehaviour
 {
 
     [SerializeField] Behaviour[] componentsToDisable = null;
-    Camera sceneCamera;
+    Camera sceneCamera = null;
 
     // Start is called before the first frame update
     void Start()
