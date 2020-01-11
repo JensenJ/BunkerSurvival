@@ -11,6 +11,8 @@ public class PlayerFlashLight : NetworkBehaviour
     [SerializeField] public float flashLightBattery = 100.0f;
     [SerializeField] public float flashLightMaxBattery = 100.0f;
 
+    [SerializeField] public static float baseFlashLightBattery = 100.0f;
+
     float lastBattery = 0.0f;
     float lastMaxBattery = 0.0f;
 
@@ -144,5 +146,10 @@ public class PlayerFlashLight : NetworkBehaviour
     public bool GetFlashLightStatus()
     {
         return flashLightStatus;
+    }
+
+    public float GetBaseFlashLightCharge()
+    {
+        return baseFlashLightBattery;
     }
 }

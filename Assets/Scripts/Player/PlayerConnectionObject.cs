@@ -51,11 +51,6 @@ public class PlayerConnectionObject : NetworkBehaviour
 
     void OnDestroy()
     {
-        if(isLocalPlayer == false)
-        {
-            return;
-        }
-
         if(playerGameObject != null)
         {
             playerGameObject.GetComponent<PlayerController>().EnableCursor();

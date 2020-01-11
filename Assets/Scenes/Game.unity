@@ -2213,7 +2213,7 @@ MonoBehaviour:
     maxSkillLevel: 5
     skillRequirements: 02000000
   - skillType: 4
-    skillDescription: Flashlight battery duration increased by 2% per level
+    skillDescription: Flashlight battery duration increased by 5% per level
     skillLevel: 0
     maxSkillLevel: 5
     skillRequirements: 

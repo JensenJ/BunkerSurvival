@@ -14,10 +14,13 @@ public class PlayerController : NetworkBehaviour
 {
     public bool isCursorEnabled = false;
     public bool canMove = true;
-    [SerializeField] [Range(0, 10)] public float speed = 5.0f;
-    [SerializeField] [Range(0, 15)] public float sprintSpeed = 7.0f;
+    [SerializeField] [Range(0, 10)] float speed = 5.0f;
+    [SerializeField] [Range(0, 15)] float sprintSpeed = 7.0f;
     [SerializeField] [Range(0, 5)] public float sensitivity = 3.0f;
-    [SerializeField] [Range(0, 20)] public float jumpForce = 2.0f;
+    [SerializeField] [Range(0, 5)] public float jumpForce = 2.0f;
+
+    [SerializeField] [Range(0, 10)] float baseSpeed = 5.0f;
+    [SerializeField] [Range(0, 15)] float baseSprintSpeed = 7.0f;
 
     [Header("Attributes:")]
     [SerializeField] [Range(0.0f, 10.0f)] public float staminaDrainSpeed = 2.5f;
@@ -86,6 +89,10 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             skills.IncreaseSkillLevel(PlayerSkill.FasterMovement);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            skills.IncreaseSkillLevel(PlayerSkill.FlashlightEfficiency);
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -182,4 +189,37 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
+
+    //SETTERS
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+    public void SetSprintSpeed(float newSprintSpeed)
+    {
+        sprintSpeed = newSprintSpeed;
+    }
+
+
+    //GETTERS
+    public float GetSpeed()
+    {
+        return speed;
+    }
+    public float GetSprintSpeed()
+    {
+        return sprintSpeed;
+    }
+
+    public float GetBaseSpeed()
+    {
+        return baseSpeed;
+    }
+
+    public float GetBaseSprintSpeed()
+    {
+        return baseSprintSpeed;
+    }
+
 }

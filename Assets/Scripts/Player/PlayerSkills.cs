@@ -13,7 +13,10 @@ public class PlayerSkills : NetworkBehaviour
 
     PlayerSkillData[] allSkills = null;
 
-    NetworkUtils netUtils = null; 
+    NetworkUtils netUtils = null;
+    PlayerFlashLight flashlight = null;
+    PlayerAttributes attributes = null;
+    PlayerController controller = null;
 
     //Creates current skill id levels
     void Awake()
@@ -23,17 +26,66 @@ public class PlayerSkills : NetworkBehaviour
         skillController = gameManager.GetComponent<PlayerSkillController>();
         allSkills = skillController.GetAllSkills();
         currentSkillIDLevels = new int[allSkills.Length];
+
+        flashlight = GetComponent<PlayerFlashLight>();
+        attributes = GetComponent<PlayerAttributes>();
+        controller = GetComponent<PlayerController>();
     }
 
     //Function to update the skill points across the network.
     void UpdateSkillPoints()
     {
-        //Update environment
+        //Apply skills
+        ApplySkills();
+        //Update skill points
         PlayerConnectionObject host = netUtils.GetHostPlayerConnectionObject();
         if (host != null)
         {
             host.CmdUpdatePlayerSkillPoints();
         }
+    }
+
+    //Function to apply player skills
+    void ApplySkills()
+    {
+        //Apply flashlight skills
+        if(flashlight != null)
+        {
+            float newFlash = GetAppliedSkillPercentValue(PlayerSkill.FlashlightEfficiency, flashlight.GetBaseFlashLightCharge(), 0.05f);
+            flashlight.SetMaxFlashLightCharge(newFlash);
+            flashlight.SetFlashLightCharge(newFlash);
+        }
+        //Apply attribute skills
+        if(attributes != null)
+        {
+            //Health
+            float newHealth = GetAppliedSkillPercentValue(PlayerSkill.IncreasedHealth, attributes.GetBaseHealth(), 0.05f);
+            attributes.SetMaxHealth(newHealth);
+            attributes.SetHealth(newHealth);
+            //Stamina
+            float newStamina = GetAppliedSkillPercentValue(PlayerSkill.IncreasedStamina, attributes.GetBaseStamina(), 0.05f);
+            attributes.SetMaxStamina(newStamina);
+            attributes.SetStamina(newStamina);
+        }
+        if(controller != null)
+        {
+            //MovementSpeed
+            //Speed
+            float newSpeed = GetAppliedSkillPercentValue(PlayerSkill.FasterMovement, controller.GetBaseSpeed(), 0.02f);
+            controller.SetSpeed(newSpeed);
+
+            //Sprint speed
+            float newSprintSpeed = GetAppliedSkillPercentValue(PlayerSkill.FasterMovement, controller.GetBaseSprintSpeed(), 0.02f);
+            controller.SetSprintSpeed(newSprintSpeed);
+        }
+    }
+
+    //Function to work out new values once skills have been applied.
+    float GetAppliedSkillPercentValue(PlayerSkill skill, float baseValue, float increasePercent)
+    {
+        int level = GetPlayerSkillLevel(skillController.GetSkillIDFromType(skill));
+        float newPercent = baseValue * increasePercent;
+        return baseValue + (newPercent * level);
     }
 
     //Increases skill level at the specified index
@@ -57,6 +109,12 @@ public class PlayerSkills : NetworkBehaviour
                     valid = false;
                 }
             }
+            //Check if max level for this skill has been achieved
+            if(currentSkillIDLevels[skillID] >= allSkills[skillID].maxSkillLevel)
+            {
+                valid = false;
+            }
+
             //If all criteria are met
             if(valid == true)
             {

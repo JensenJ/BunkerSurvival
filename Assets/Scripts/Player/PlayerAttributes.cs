@@ -14,6 +14,9 @@ public class PlayerAttributes : NetworkBehaviour
     [SerializeField] float maxHealth = 100.0f;
     [SerializeField] float maxStamina = 100.0f;
 
+    [SerializeField] public static float baseHealth = 100.0f;
+    [SerializeField] public static float baseStamina = 100.0f;
+
     float lastHealth = 0;
     float lastMaxHealth = 0;
     float lastStamina = 0;
@@ -141,5 +144,13 @@ public class PlayerAttributes : NetworkBehaviour
     public float GetMaxStamina()
     {
         return maxStamina;
+    }
+    public float GetBaseHealth()
+    {
+        return baseHealth;
+    }
+    public float GetBaseStamina()
+    {
+        return baseStamina;
     }
 }
