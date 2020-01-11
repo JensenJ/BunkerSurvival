@@ -51,6 +51,15 @@ public class PlayerConnectionObject : NetworkBehaviour
 
     void OnDestroy()
     {
+        if(isLocalPlayer == false)
+        {
+            return;
+        }
+
+        if(playerGameObject != null)
+        {
+            playerGameObject.GetComponent<PlayerController>().EnableCursor();
+        }
         Destroy(playerGameObject);
     }
 
@@ -141,10 +150,10 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
+            RpcUpdateFlashLightBattery(flashLightBattery, flashLightMaxBattery);
+
             flashlight.SetFlashLightCharge(flashLightBattery);
             flashlight.SetMaxFlashLightCharge(flashLightMaxBattery);
-
-            RpcUpdateFlashLightBattery(flashLightBattery, flashLightMaxBattery);
         }
     }
 
@@ -156,12 +165,12 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if(attributes != null)
         {
+            RpcUpdatePlayerAttributes(attributes.GetHealth(), attributes.GetMaxHealth(), attributes.GetStamina(), attributes.GetMaxStamina());
+
             attributes.SetHealth(health);
             attributes.SetMaxHealth(maxHealth);
             attributes.SetStamina(stamina);
             attributes.SetMaxStamina(maxStamina);
-
-            RpcUpdatePlayerAttributes(health, maxHealth, stamina, maxStamina);
         }
     }
     
@@ -224,13 +233,16 @@ public class PlayerConnectionObject : NetworkBehaviour
     void RpcUpdateEnvironment(float m_timeMultiplier, float m_currentTime, int m_days, float m_secondsInFullDay, float m_temperature, float m_windStrength, float m_windAngle)
     {
         EnvironmentController controller = gameManager.GetComponent<EnvironmentController>();
-        controller.timeMultiplier = m_timeMultiplier;
-        controller.currentTimeOfDay = m_currentTime;
-        controller.days = m_days;
-        controller.secondsInFullDay = m_secondsInFullDay;
-        controller.temperature = m_temperature;
-        controller.windSpeed = m_windStrength;
-        controller.windAngle = m_windAngle;
+        if(controller != null)
+        {
+            controller.timeMultiplier = m_timeMultiplier;
+            controller.currentTimeOfDay = m_currentTime;
+            controller.days = m_days;
+            controller.secondsInFullDay = m_secondsInFullDay;
+            controller.temperature = m_temperature;
+            controller.windSpeed = m_windStrength;
+            controller.windAngle = m_windAngle;
+        }
     }
 
     //RPC to set the flash light status
@@ -251,11 +263,16 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerFlashLight flashlight = playerGameObject.GetComponent<PlayerFlashLight>();
         if (flashlight != null)
         {
+            //Only sync for local player, prevents incorrect data being synced, fixes issue #5 on GitHub
+            if (hasAuthority)
+            {
+                return;
+            }
+
             flashlight.SetFlashLightCharge(flashLightBattery);
             flashlight.SetMaxFlashLightCharge(flashLightMaxBattery);
         }
     }
-
 
     //RPC to update player attributes such as health
     [ClientRpc]
@@ -264,6 +281,12 @@ public class PlayerConnectionObject : NetworkBehaviour
         PlayerAttributes attributes = playerGameObject.GetComponent<PlayerAttributes>();
         if(attributes != null)
         {
+            //Only sync for local player, prevents incorrect data being synced, fixes issue #5 on GitHub
+            if (hasAuthority)
+            {
+                return;
+            }
+
             attributes.SetHealth(health);
             attributes.SetMaxHealth(maxHealth);
             attributes.SetStamina(stamina);

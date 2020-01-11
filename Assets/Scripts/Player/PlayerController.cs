@@ -104,14 +104,14 @@ public class PlayerController : NetworkBehaviour
     }
 
     //Function to enable cursor, used in menus
-    void EnableCursor()
+    public void EnableCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         isCursorEnabled = true;
     }
 
     //Function to disable cursor, used in menus
-    void DisableCursor()
+    public void DisableCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         isCursorEnabled = false;
