@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GridSystem<TGridObject>
 {
@@ -45,14 +46,14 @@ public class GridSystem<TGridObject>
         if (showDebug)
         {
             //Create text
-            TextMesh[,] debugTextArray = new TextMesh[width, height];
+            TextMeshPro[,] debugTextArray = new TextMeshPro[width, height];
             //For every tile
             for (int x = 0; x < gridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
                     //Create text representation of value
-                    debugTextArray[x, y] = Utilities.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, 0, cellSize) * 0.5f, 10, Color.white, TextAnchor.MiddleCenter, TextAlignment.Center);
+                    debugTextArray[x, y] = Utilities.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, 0, cellSize) * 0.5f, 2, Color.white, TextAlignmentOptions.Center);
                     //Draw debug grid lines
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
@@ -119,12 +120,22 @@ public class GridSystem<TGridObject>
     //Get world position from grid
     private Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, 0, y) * cellSize + originPosition;
+        return new Vector3(x, 1.1f, y) * cellSize + originPosition;
     }
     //Get XY value from world position
     private void GetXY(Vector3 worldPosition, out int x, out int y)
     {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).z / cellSize);
+    }
+
+    public int GetWidth()
+    {
+        return width;
+    }
+
+    public int GetHeight()
+    {
+        return height;
     }
 }
