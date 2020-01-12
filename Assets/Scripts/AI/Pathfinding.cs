@@ -12,11 +12,14 @@ public class Pathfinding
     private GridSystem<PathNode> grid;
     private List<PathNode> openList;
     private List<PathNode> closedList;
+    private float walkableCheckRadius;
+
     //Constructor
-    public Pathfinding(int width, int height)
+    public Pathfinding(int width, int height, LayerMask[] unwalkableMasks, float walkableCheckRadius, bool showDebug)
     {
         Instance = this;
-        grid = new GridSystem<PathNode>(width, height, 1, Vector3.zero, (GridSystem<PathNode> grid, int x, int y) => new PathNode(grid, x, y), true);
+        grid = new GridSystem<PathNode>(width, height, 1, Vector3.zero, (GridSystem<PathNode> grid, int x, int y) => new PathNode(grid, x, y, unwalkableMasks), showDebug);
+        this.walkableCheckRadius = walkableCheckRadius;
     }
 
     //Returns grid object
@@ -86,7 +89,7 @@ public class Pathfinding
             foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
             {
                 if (closedList.Contains(neighbourNode)) continue;
-                if (!neighbourNode.isWalkable)
+                if (!neighbourNode.CheckWalkable(walkableCheckRadius))
                 {
                     closedList.Add(neighbourNode);
                     continue;
