@@ -12,12 +12,14 @@ public class PathNode
     public int hCost;
     public int fCost;
 
+    public bool isWalkable;
     public PathNode previousNode;
     public PathNode(GridSystem<PathNode> grid, int x, int y)
     {
         this.grid = grid;
         this.x = x;
         this.y = y;
+        this.isWalkable = true;
     }
 
     public void CalculateFCost()

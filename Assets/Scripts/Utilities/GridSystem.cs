@@ -123,7 +123,7 @@ public class GridSystem<TGridObject>
         return new Vector3(x, 1.1f, y) * cellSize + originPosition;
     }
     //Get XY value from world position
-    private void GetXY(Vector3 worldPosition, out int x, out int y)
+    public void GetXY(Vector3 worldPosition, out int x, out int y)
     {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).z / cellSize);
@@ -137,5 +137,10 @@ public class GridSystem<TGridObject>
     public int GetHeight()
     {
         return height;
+    }
+
+    public float GetCellSize()
+    {
+        return cellSize;
     }
 }

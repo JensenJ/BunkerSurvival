@@ -7,12 +7,15 @@ public class Pathfinding
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
 
+    public static Pathfinding Instance { get; private set; }
+
     private GridSystem<PathNode> grid;
     private List<PathNode> openList;
     private List<PathNode> closedList;
     //Constructor
     public Pathfinding(int width, int height)
     {
+        Instance = this;
         grid = new GridSystem<PathNode>(width, height, 1, Vector3.zero, (GridSystem<PathNode> grid, int x, int y) => new PathNode(grid, x, y), true);
     }
 
@@ -20,6 +23,28 @@ public class Pathfinding
     public GridSystem<PathNode> GetGrid()
     {
         return grid;
+    }
+
+    //Function that returns the global positions of each node.
+    public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
+    {
+        grid.GetXY(startWorldPosition, out int startX, out int startY);
+        grid.GetXY(endWorldPosition, out int endX, out int endY);
+
+        List<PathNode> path = FindPath(startX, startY, endX, endY);
+        if(path == null)
+        {
+            return null;
+        }
+        else
+        {
+            List<Vector3> vectorPath = new List<Vector3>();
+            foreach (PathNode pathNode in path)
+            {
+                vectorPath.Add(new Vector3(pathNode.x, 0, pathNode.y) + Vector3.one * grid.GetCellSize() * 0.5f);
+            }
+            return vectorPath;
+        }
     }
 
     //Main function to calculate path
@@ -61,6 +86,11 @@ public class Pathfinding
             foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
             {
                 if (closedList.Contains(neighbourNode)) continue;
+                if (!neighbourNode.isWalkable)
+                {
+                    closedList.Add(neighbourNode);
+                    continue;
+                }
 
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                 if(tentativeGCost < neighbourNode.gCost)
