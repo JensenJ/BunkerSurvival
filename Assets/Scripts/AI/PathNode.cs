@@ -7,6 +7,7 @@ public class PathNode
     private GridSystem<PathNode> grid;
     public int x;
     public int y;
+    Vector3 gridOriginPosition;
 
     public int gCost;
     public int hCost;
@@ -14,12 +15,13 @@ public class PathNode
 
     LayerMask[] unwalkableMasks;
     public PathNode previousNode;
-    public PathNode(GridSystem<PathNode> grid, int x, int y, LayerMask[] unwalkableMasks)
+    public PathNode(GridSystem<PathNode> grid, int x, int y, Vector3 gridOriginPosition, LayerMask[] unwalkableMasks)
     {
         this.grid = grid;
         this.x = x;
         this.y = y;
         this.unwalkableMasks = unwalkableMasks;
+        this.gridOriginPosition = gridOriginPosition;
     }
 
     public void CalculateFCost()
@@ -34,7 +36,7 @@ public class PathNode
 
     public bool CheckWalkable(float checkRadius)
     {
-        Vector3 worldPosition = new Vector3(x, 0, y) + Vector3.one * grid.GetCellSize() * 0.5f;
+        Vector3 worldPosition = new Vector3(gridOriginPosition.x + x, 0, gridOriginPosition.y + y) + Vector3.one * grid.GetCellSize() * 0.5f;
         for (int i = 0; i < unwalkableMasks.Length; i++)
         {
             bool canWalk = !Physics.CheckSphere(worldPosition, checkRadius, unwalkableMasks[i]);

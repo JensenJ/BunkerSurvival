@@ -15,10 +15,10 @@ public class Pathfinding
     private float walkableCheckRadius;
 
     //Constructor
-    public Pathfinding(int width, int height, LayerMask[] unwalkableMasks, float walkableCheckRadius, bool showDebug)
+    public Pathfinding(int width, int height, Vector3 originPosition, LayerMask[] unwalkableMasks, float walkableCheckRadius, bool showDebug)
     {
         Instance = this;
-        grid = new GridSystem<PathNode>(width, height, 1, Vector3.zero, (GridSystem<PathNode> grid, int x, int y) => new PathNode(grid, x, y, unwalkableMasks), showDebug);
+        grid = new GridSystem<PathNode>(width, height, 1, originPosition, (GridSystem<PathNode> grid, int x, int y) => new PathNode(grid, x, y, originPosition, unwalkableMasks), showDebug);
         this.walkableCheckRadius = walkableCheckRadius;
     }
 

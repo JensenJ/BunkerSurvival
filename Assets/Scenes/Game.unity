@@ -1571,7 +1571,7 @@ GameObject:
   - component: {fileID: 305424250}
   - component: {fileID: 305424249}
   m_Layer: 10
-  m_Name: Cube
+  m_Name: AITestBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1643,12 +1643,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305424248}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 1, z: 4}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12, y: 1.25, z: 4}
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1575811354}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &333801820
 PrefabInstance:
@@ -6811,6 +6811,8 @@ MonoBehaviour:
   - serializedVersion: 2
     m_Bits: 1024
   gridSize: {x: 10, y: 10}
+  gridOriginPosition: {x: 10, y: 0, z: 0}
+  walkableCheckRadius: 0.5
   showDebug: 1
 --- !u!4 &1575811354
 Transform:
@@ -6819,11 +6821,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575811352}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
+  m_Children:
+  - {fileID: 305424252}
+  m_Father: {fileID: 2130382743}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1594906430 stripped
@@ -9892,6 +9895,7 @@ Transform:
   - {fileID: 1563677831}
   - {fileID: 1641252261}
   - {fileID: 1798084127}
+  - {fileID: 1575811354}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

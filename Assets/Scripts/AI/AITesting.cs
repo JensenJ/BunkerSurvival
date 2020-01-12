@@ -5,14 +5,15 @@ using UnityEngine;
 public class AITesting : MonoBehaviour
 {
     private Pathfinding pathfinding;
-    [SerializeField] LayerMask[] unwalkableMasks;
-    [SerializeField] Vector2Int gridSize;
-    [SerializeField] float walkableCheckRadius;
-    [SerializeField] bool showDebug;
+    [SerializeField] LayerMask[] unwalkableMasks = null;
+    [SerializeField] Vector2Int gridSize = new Vector2Int();
+    [SerializeField] Vector3 gridOriginPosition= new Vector3();
+    [SerializeField] float walkableCheckRadius = 0.0f;
+    [SerializeField] bool showDebug = false;
 
     private void Start()
     {
-        pathfinding = new Pathfinding(gridSize.x, gridSize.y, unwalkableMasks, walkableCheckRadius, showDebug);
+        pathfinding = new Pathfinding(gridSize.x, gridSize.y, gridOriginPosition, unwalkableMasks, walkableCheckRadius, showDebug);
     }
 
     private void Update()
@@ -31,7 +32,8 @@ public class AITesting : MonoBehaviour
                 {
                     if (showDebug)
                     {
-                        Debug.DrawLine(new Vector3(path[i].x + 0.5f, 1.1f, path[i].y + 0.5f), new Vector3(path[i + 1].x + 0.5f, 1.1f, path[i + 1].y + 0.5f), Color.green, 5f);
+                        Debug.DrawLine(new Vector3(gridOriginPosition.x + path[i].x + 0.5f, 1.1f, gridOriginPosition.y + path[i].y + 0.5f), 
+                            new Vector3(gridOriginPosition.x + path[i + 1].x + 0.5f, 1.1f, gridOriginPosition.y + path[i + 1].y + 0.5f), Color.green, 10f);
                     }
                 }
             }
