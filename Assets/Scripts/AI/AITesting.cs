@@ -13,6 +13,7 @@ public class AITesting : MonoBehaviour
 
     private void Start()
     {
+        gridOriginPosition += transform.position;
         pathfinding = new Pathfinding(gridSize.x, gridSize.y, gridOriginPosition, unwalkableMasks, walkableCheckRadius, showDebug);
     }
 
@@ -32,8 +33,8 @@ public class AITesting : MonoBehaviour
                 {
                     if (showDebug)
                     {
-                        Debug.DrawLine(new Vector3(gridOriginPosition.x + path[i].x + 0.5f, 1.1f, gridOriginPosition.y + path[i].y + 0.5f), 
-                            new Vector3(gridOriginPosition.x + path[i + 1].x + 0.5f, 1.1f, gridOriginPosition.y + path[i + 1].y + 0.5f), Color.green, 10f);
+                        Debug.DrawLine(new Vector3(gridOriginPosition.x + path[i].x + 0.5f, 1.1f, gridOriginPosition.z + path[i].y + 0.5f), 
+                            new Vector3(gridOriginPosition.x + path[i + 1].x + 0.5f, 1.1f, gridOriginPosition.z + path[i + 1].y + 0.5f), Color.green, 10f);
                     }
                 }
             }

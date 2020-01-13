@@ -1644,7 +1644,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305424248}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12, y: 1.25, z: 4}
+  m_LocalPosition: {x: 3, y: 1.25, z: 4}
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 1575811354}
@@ -6811,7 +6811,7 @@ MonoBehaviour:
   - serializedVersion: 2
     m_Bits: 1024
   gridSize: {x: 10, y: 10}
-  gridOriginPosition: {x: 10, y: 0, z: 0}
+  gridOriginPosition: {x: 0, y: 0, z: 0}
   walkableCheckRadius: 0.5
   showDebug: 1
 --- !u!4 &1575811354
@@ -6822,7 +6822,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575811352}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 40}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 305424252}
