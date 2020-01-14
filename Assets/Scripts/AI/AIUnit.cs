@@ -6,9 +6,11 @@ using Mirror;
 public class AIUnit : NetworkBehaviour
 {
 
-    IEnumerator movementCoroutine;
-
     [SerializeField] AIGrid aiGrid = null;
+    [SerializeField] public float unitSpeed = 1.0f;
+
+    List<Vector3> currentPath = null;
+    int currentPathIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -34,34 +36,56 @@ public class AIUnit : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //Randomly generate position and attempt to move there
-            Vector3 targetPos = new Vector3(Random.Range(0, 50), 1, Random.Range(0, 50));
-            Debug.Log("Target position: " + targetPos);
+            Vector3 targetPos = new Vector3(Random.Range(0, 50), 1.0f, Random.Range(0, 50));
+            Debug.Log("Moving to" + targetPos);
+            SetTargetPosition(targetPos);
+        }
+        Move();
+    }
 
-            //Coroutine for movement
-            if(movementCoroutine != null)
+    //Function for moving
+    private void Move()
+    {
+        //If there is a path
+        if(currentPath != null)
+        {
+            //Get target pos
+            Vector3 targetPos = currentPath[currentPathIndex];
+            //If within a certain range of area, stop moving
+            if (Vector3.Distance(transform.position, targetPos) > 0.5f)
             {
-                StopCoroutine(movementCoroutine);
+                //Actual transformation
+                Vector3 moveDir = (targetPos - transform.position).normalized;
+                transform.position = transform.position + moveDir * unitSpeed * Time.deltaTime;
             }
-            movementCoroutine = MoveUnit(targetPos);
-            StartCoroutine(movementCoroutine);
+            else
+            {
+                //arrived at destination (each node), increment path index
+                currentPathIndex++;
+                //If at final node, stop moving
+                if(currentPathIndex >= currentPath.Count)
+                {
+                    StopMoving();
+                }
+            }
         }
     }
 
-    //Coroutine for moving a unit
-    IEnumerator MoveUnit(Vector3 targetPosition)
+    //Function to stop moving
+    public void StopMoving()
     {
-        List<Vector3> positions = aiGrid.GetPath(transform.position, targetPosition);
-        if(positions != null)
+        currentPath = null;
+    }
+
+    //Sets the target position for movement.
+    public void SetTargetPosition(Vector3 targetPos)
+    {
+        currentPathIndex = 0;
+        currentPath = Pathfinding.Instance.FindPath(transform.position, targetPos);
+
+        if(currentPath != null && currentPath.Count > 1)
         {
-            for (int i = 0; i < positions.Count - 1; i++)
-            {
-                transform.position = positions[i];
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-        else
-        {
-            Debug.Log("No path available");
+            currentPath.RemoveAt(0);
         }
     }
 }
