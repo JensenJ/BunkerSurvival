@@ -5,12 +5,32 @@ using Mirror;
 
 public class AIUnit : NetworkBehaviour
 {
+    //Different AI states
+    private enum AIState
+    {
+        None,
+        Roaming,
+        Chase,
+        Patrol
+    }
 
     [SerializeField] AIGrid aiGrid = null;
     [SerializeField] public float unitSpeed = 1.0f;
+    [SerializeField] AIState state;
+    [SerializeField] Vector3 targetPos;
+
+    private float unitHeight = 1.0f;
+
+    float roamWaitTime = 1.0f;
 
     List<Vector3> currentPath = null;
     int currentPathIndex = 0;
+
+    void Awake()
+    {
+        targetPos = transform.position;
+        state = AIState.None;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,13 +52,31 @@ public class AIUnit : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Check for keyboard press
-        if (Input.GetKeyDown(KeyCode.R))
+        //State machine for AI behaviour
+        switch (state)
         {
-            //Randomly generate position and attempt to move there
-            Vector3 targetPos = new Vector3(Random.Range(0, 50), 1.0f, Random.Range(0, 50));
-            Debug.Log("Moving to" + targetPos);
-            SetTargetPosition(targetPos);
+            case AIState.None:
+                //Check for keyboard press
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    //Randomly generate position and attempt to move there
+                    targetPos = new Vector3(Random.Range(0, 50), unitHeight, Random.Range(0, 50));
+                    Debug.Log("Moving to " + targetPos);
+                    SetTargetPosition(targetPos);
+                }
+                break;
+            case AIState.Roaming:
+                //If at destination and roam wait time has exceeded, calculate new roam position
+                if (Vector3.Distance(transform.position, targetPos) < 1.0f && Time.time >= roamWaitTime)
+                {
+                    int x = (int)transform.position.x + Random.Range(-10, 10);
+                    int z = (int)transform.position.z + Random.Range(-10, 10);
+                    targetPos = new Vector3(x, unitHeight, z);
+                    Debug.Log("Roaming to " + targetPos);
+                    SetTargetPosition(targetPos);
+                    roamWaitTime = Random.Range(0.0f, 10.0f) + Time.time;
+                }
+                break;
         }
         Move();
     }
@@ -52,7 +90,7 @@ public class AIUnit : NetworkBehaviour
             //Get target pos
             Vector3 targetPos = currentPath[currentPathIndex];
             //If within a certain range of area, stop moving
-            if (Vector3.Distance(transform.position, targetPos) > 0.5f)
+            if (Vector3.Distance(transform.position, targetPos) > 0.1f)
             {
                 //Actual transformation
                 Vector3 moveDir = (targetPos - transform.position).normalized;
@@ -78,14 +116,20 @@ public class AIUnit : NetworkBehaviour
     }
 
     //Sets the target position for movement.
-    public void SetTargetPosition(Vector3 targetPos)
+    public void SetTargetPosition(Vector3 target)
     {
         currentPathIndex = 0;
-        currentPath = Pathfinding.Instance.FindPath(transform.position, targetPos);
+        currentPath = Pathfinding.Instance.FindPath(transform.position, target);
 
         if(currentPath != null && currentPath.Count > 1)
         {
             currentPath.RemoveAt(0);
+        }
+
+        if(currentPath == null)
+        {
+            Debug.Log("Path not found");
+            targetPos = transform.position;
         }
     }
 }

@@ -51,10 +51,22 @@ public class Pathfinding
     }
 
     //Main function to calculate path
-    public List<PathNode> FindPath(int startX, int startY, int EndX, int EndY)
+    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
+        //Validating start position
+        if(startX < 0 || startX >= grid.GetWidth() || startY < 0 || startY >= grid.GetHeight())
+        {
+            return null;
+        }
+
+        //Validating end position
+        if (endX < 0 || endX >= grid.GetWidth() || endY < 0 || endY >= grid.GetHeight())
+        {
+            return null;
+        }
+
         PathNode startNode = grid.GetGridObject(startX, startY);
-        PathNode endNode = grid.GetGridObject(EndX, EndY);
+        PathNode endNode = grid.GetGridObject(endX, endY);
         openList = new List<PathNode> { startNode };
         closedList = new List<PathNode>();
 
