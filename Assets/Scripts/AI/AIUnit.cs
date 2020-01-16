@@ -21,7 +21,7 @@ public class AIUnit : NetworkBehaviour
 
     private float unitHeight = 1.0f;
 
-    float roamWaitTime = 1.0f;
+    float waitTime = 1.0f;
 
     List<Vector3> currentPath = null;
     int currentPathIndex = 0;
@@ -67,14 +67,24 @@ public class AIUnit : NetworkBehaviour
                 break;
             case AIState.Roaming:
                 //If at destination and roam wait time has exceeded, calculate new roam position
-                if (Vector3.Distance(transform.position, targetPos) < 1.0f && Time.time >= roamWaitTime)
+                if (Vector3.Distance(transform.position, targetPos) < 1.0f && Time.time >= waitTime)
                 {
                     int x = (int)transform.position.x + Random.Range(-10, 10);
                     int z = (int)transform.position.z + Random.Range(-10, 10);
                     targetPos = new Vector3(x, unitHeight, z);
                     Debug.Log("Roaming to " + targetPos);
                     SetTargetPosition(targetPos);
-                    roamWaitTime = Random.Range(0.0f, 10.0f) + Time.time;
+                    waitTime = Random.Range(0.0f, 10.0f) + Time.time;
+                }
+                break;
+            case AIState.Chase:
+                if (Time.time >= waitTime)
+                {
+                    targetPos = GetNearestThreatPosition();
+                    targetPos.y = unitHeight;
+                    Debug.Log("Chasing to " + targetPos);
+                    SetTargetPosition(targetPos);
+                    waitTime = Time.time + 2.0f;
                 }
                 break;
         }
@@ -131,5 +141,54 @@ public class AIUnit : NetworkBehaviour
             Debug.Log("Path not found");
             targetPos = transform.position;
         }
+    }
+
+    //Function to return the nearest threat's position
+    public Vector3 GetNearestThreatPosition()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
+
+        List<GameObject> targets = new List<GameObject>();
+
+        //Add all players found to target list
+        for (int i = 0; i < players.Length; i++)
+        {
+            targets.Add(players[i]);
+        }
+
+        //Add all buildings found to target list
+        for (int i = 0; i < buildings.Length; i++)
+        {
+            targets.Add(buildings[i]);
+        }
+
+        GameObject nearestTarget = null;
+        float nearestDistance = float.MaxValue;
+
+        Debug.Log(targets.Count);
+
+        //Get nearest target
+        for (int i = 0; i < targets.Count; i++)
+        {
+            float distance = Vector3.Distance(transform.position, targets[i].transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestTarget = targets[i];
+            }
+        }
+
+        //If no targets found
+        if(nearestTarget == null)
+        {
+            Vector3 selfPos = transform.position;
+            selfPos.y = unitHeight;
+            return selfPos;
+        }
+
+        Vector3 pos = nearestTarget.transform.position;
+        pos.y = unitHeight;
+        return pos;
     }
 }

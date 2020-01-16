@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerConnection
   - AIGrid
+  - Building
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - Player
+  - Entity
   - AIUnwalkable
   - 
   - 

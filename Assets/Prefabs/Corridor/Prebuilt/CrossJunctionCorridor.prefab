@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1445517944835283526}
   m_Layer: 0
   m_Name: CrossJunctionCorridor
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
