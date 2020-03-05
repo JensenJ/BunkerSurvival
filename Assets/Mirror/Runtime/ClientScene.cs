@@ -55,8 +55,6 @@ namespace Mirror
         static readonly Dictionary<Guid, SpawnHandlerDelegate> spawnHandlers = new Dictionary<Guid, SpawnHandlerDelegate>();
         static readonly Dictionary<Guid, UnSpawnDelegate> unspawnHandlers = new Dictionary<Guid, UnSpawnDelegate>();
 
-        // this is never called, and if we do call it in NetworkClient.Shutdown
-        // then the client's player object won't be removed after disconnecting!
         internal static void Shutdown()
         {
             ClearSpawners();
@@ -75,6 +73,11 @@ namespace Mirror
             // NOTE: It can be "normal" when changing scenes for the player to be destroyed and recreated.
             // But, the player structures are not cleaned up, we'll just replace the old player
             localPlayer = identity;
+
+            // NOTE: we DONT need to set isClient=true here, because OnStartClient
+            // is called before OnStartLocalPlayer, hence it's already set.
+            // localPlayer.isClient = true;
+
             if (readyConnection != null)
             {
                 readyConnection.identity = identity;
@@ -179,10 +182,15 @@ namespace Mirror
 
             if (conn != null)
             {
-                conn.Send(new ReadyMessage());
+                // Set these before sending the ReadyMessage, otherwise host client
+                // will fail in InternalAddPlayer with null readyConnection.
                 ready = true;
                 readyConnection = conn;
                 readyConnection.isReady = true;
+
+                // Tell server we're ready to have a player object spawned
+                conn.Send(new ReadyMessage());
+
                 return true;
             }
             Debug.LogError("Ready() called with invalid connection object: conn=null");
@@ -451,6 +459,7 @@ namespace Mirror
             NetworkIdentity.spawned.Clear();
         }
 
+        // Deprecated 01/15/2019
         /// <summary>
         /// Obsolete: Use <see cref="NetworkIdentity.spawned"/> instead.
         /// </summary>
@@ -490,8 +499,10 @@ namespace Mirror
             // (Count is 0 if there were no components)
             if (msg.payload.Count > 0)
             {
-                NetworkReader payloadReader = new NetworkReader(msg.payload);
-                identity.OnUpdateVars(payloadReader, true);
+                using (PooledNetworkReader payloadReader = NetworkReaderPool.GetReader(msg.payload))
+                {
+                    identity.OnDeserializeAllSafely(payloadReader, true);
+                }
             }
 
             NetworkIdentity.spawned[msg.netId] = identity;
@@ -578,7 +589,7 @@ namespace Mirror
                 }
             }
 
-            if (LogFilter.Debug) Debug.Log("Client spawn for [netId:" + msg.netId + "] [sceneId:" + msg.sceneId + "] obj:" + spawnedId.gameObject.name);
+            if (LogFilter.Debug) Debug.Log("Client spawn for [netId:" + msg.netId + "] [sceneId:" + msg.sceneId + "] obj:" + spawnedId);
             return spawnedId;
         }
 
@@ -685,7 +696,8 @@ namespace Mirror
 
             if (NetworkIdentity.spawned.TryGetValue(msg.netId, out NetworkIdentity localObject) && localObject != null)
             {
-                localObject.OnUpdateVars(new NetworkReader(msg.payload), false);
+                using (PooledNetworkReader networkReader = NetworkReaderPool.GetReader(msg.payload))
+                    localObject.OnDeserializeAllSafely(networkReader, false);
             }
             else
             {
@@ -699,7 +711,8 @@ namespace Mirror
 
             if (NetworkIdentity.spawned.TryGetValue(msg.netId, out NetworkIdentity identity))
             {
-                identity.HandleRPC(msg.componentIndex, msg.functionHash, new NetworkReader(msg.payload));
+                using (PooledNetworkReader networkReader = NetworkReaderPool.GetReader(msg.payload))
+                    identity.HandleRPC(msg.componentIndex, msg.functionHash, networkReader);
             }
         }
 
@@ -709,7 +722,8 @@ namespace Mirror
 
             if (NetworkIdentity.spawned.TryGetValue(msg.netId, out NetworkIdentity identity))
             {
-                identity.HandleSyncEvent(msg.componentIndex, msg.functionHash, new NetworkReader(msg.payload));
+                using (PooledNetworkReader networkReader = NetworkReaderPool.GetReader(msg.payload))
+                    identity.HandleSyncEvent(msg.componentIndex, msg.functionHash, networkReader);
             }
             else
             {

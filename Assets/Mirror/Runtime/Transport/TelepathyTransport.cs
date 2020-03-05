@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +13,7 @@ namespace Mirror
     public class TelepathyTransport : Transport
     {
         // scheme used by this transport
+        // "tcp4" means tcp with 4 bytes header, network byte order
         public const string Scheme = "tcp4";
 
         public ushort port = 7777;
@@ -19,6 +21,7 @@ namespace Mirror
         [Tooltip("Nagle Algorithm can be disabled by enabling NoDelay")]
         public bool NoDelay = true;
 
+        // Deprecated 04/08/2019
         [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use MaxMessageSizeFromClient or MaxMessageSizeFromServer instead.")]
         public int MaxMessageSize
         {
@@ -114,8 +117,17 @@ namespace Mirror
             // note: we need to check enabled in case we set it to false
             // when LateUpdate already started.
             // (https://github.com/vis2k/Mirror/pull/379)
-            while (enabled && ProcessClientMessage()) {}
-            while (enabled && ProcessServerMessage()) {}
+            while (enabled && ProcessClientMessage()) { }
+            while (enabled && ProcessServerMessage()) { }
+        }
+
+        public override Uri ServerUri()
+        {
+            UriBuilder builder = new UriBuilder();
+            builder.Scheme = Scheme;
+            builder.Host = Dns.GetHostName();
+            builder.Port = port;
+            return builder.Uri;
         }
 
         // server

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 namespace Mirror.Websocket
@@ -8,7 +9,6 @@ namespace Mirror.Websocket
     {
         public const string Scheme = "ws";
         public const string SecureScheme = "wss";
-
 
         protected Client client = new Client();
         protected Server server = new Server();
@@ -86,6 +86,16 @@ namespace Mirror.Websocket
         }
 
         public override void ClientDisconnect() => client.Disconnect();
+
+        public override Uri ServerUri()
+        {
+            UriBuilder builder = new UriBuilder();
+            builder.Scheme = Secure? SecureScheme : Scheme;
+            builder.Host = Dns.GetHostName();
+            builder.Port = port;
+            return builder.Uri;
+        }
+
 
         // server
         public override bool ServerActive() => server.Active;

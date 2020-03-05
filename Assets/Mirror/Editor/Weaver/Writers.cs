@@ -24,8 +24,21 @@ namespace Mirror.Weaver
         public static MethodReference GetWriteFunc(TypeReference variable, int recursionCount = 0)
         {
             if (writeFuncs.TryGetValue(variable.FullName, out MethodReference foundFunc))
-            {               
+            {
                 return foundFunc;
+            }
+
+            MethodDefinition newWriterFunc;
+
+            // Arrays are special,  if we resolve them, we get the element type,
+            // so the following ifs might choke on it for scriptable objects
+            // or other objects that require a custom serializer
+            // thus check if it is an array and skip all the checks.
+            if (variable.IsArray)
+            {
+                newWriterFunc = GenerateArrayWriteFunc(variable, recursionCount);
+                RegisterWriteFunc(variable.FullName, newWriterFunc);
+                return newWriterFunc;
             }
 
             if (variable.IsByReference)
@@ -38,11 +51,6 @@ namespace Mirror.Weaver
             if (td == null)
             {
                 Weaver.Error($"{variable} is not a supported type. Use a supported type or provide a custom writer");
-                return null;
-            }
-            if (td.IsDerivedFrom(Weaver.ScriptableObjectType))
-            {
-                Weaver.Error($"Cannot generate writer for scriptable object {variable}. Use a supported type or provide a custom writer");
                 return null;
             }
             if (td.IsDerivedFrom(Weaver.ComponentType))
@@ -61,14 +69,7 @@ namespace Mirror.Weaver
                 return null;
             }
 
-
-            MethodDefinition newWriterFunc;
-
-            if (variable.IsArray)
-            {
-                newWriterFunc = GenerateArrayWriteFunc(variable, recursionCount);
-            }
-            else if (variable.Resolve().IsEnum)
+            if (variable.Resolve().IsEnum)
             {
                 return GetWriteFunc(variable.Resolve().GetEnumUnderlyingType(), recursionCount);
             }
@@ -78,7 +79,7 @@ namespace Mirror.Weaver
             }
             else
             {
-                newWriterFunc = GenerateStructWriterFunction(variable, recursionCount);
+                newWriterFunc = GenerateClassOrStructWriterFunction(variable, recursionCount);
             }
 
             if (newWriterFunc == null)
@@ -99,7 +100,7 @@ namespace Mirror.Weaver
             Weaver.WeaveLists.generateContainerClass.Methods.Add(newWriterFunc);
         }
 
-        static MethodDefinition GenerateStructWriterFunction(TypeReference variable, int recursionCount)
+        static MethodDefinition GenerateClassOrStructWriterFunction(TypeReference variable, int recursionCount)
         {
             if (recursionCount > MaxRecursionCount)
             {
@@ -246,12 +247,10 @@ namespace Mirror.Weaver
             worker.Append(worker.Create(OpCodes.Ldobj, variable.GetElementType()));
             worker.Append(worker.Create(OpCodes.Call, elementWriteFunc));
 
-
             worker.Append(worker.Create(OpCodes.Ldloc_1));
             worker.Append(worker.Create(OpCodes.Ldc_I4_1));
             worker.Append(worker.Create(OpCodes.Add));
             worker.Append(worker.Create(OpCodes.Stloc_1));
-
 
             // end for loop
             worker.Append(labelHead);
@@ -310,7 +309,7 @@ namespace Mirror.Weaver
             worker.Append(worker.Create(OpCodes.Call, countref));
             worker.Append(worker.Create(OpCodes.Stloc_0));
 
-            
+
             // writer.WritePackedInt32(length);
             worker.Append(worker.Create(OpCodes.Ldarg_0));
             worker.Append(worker.Create(OpCodes.Ldloc_0));
@@ -318,7 +317,7 @@ namespace Mirror.Weaver
 
             // Loop through the ArraySegment<T> and call the writer for each element.
             // generates this:
-            // for (int i=0; i< length; i++) 
+            // for (int i=0; i< length; i++)
             // {
             //    writer.Write(value.Array[i + value.Offset]);
             // }
@@ -349,13 +348,12 @@ namespace Mirror.Weaver
             worker.Append(worker.Create(OpCodes.Add));
             worker.Append(worker.Create(OpCodes.Stloc_1));
 
-
             // end for loop
             worker.Append(labelHead);
             worker.Append(worker.Create(OpCodes.Ldloc_1));
             worker.Append(worker.Create(OpCodes.Ldloc_0));
             worker.Append(worker.Create(OpCodes.Blt, labelBody));
-            
+
             // return
             worker.Append(worker.Create(OpCodes.Ret));
             return writerFunc;

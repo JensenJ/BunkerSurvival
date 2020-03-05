@@ -20,7 +20,10 @@ namespace Mirror.Weaver
 
         public static bool WeaverEnabled { get; set; } // controls whether we weave any assemblies when CompilationPipeline delegates are invoked
         public static bool UnityLogEnabled = true; // controls weather Weaver errors are reported direct to the Unity console (tests enable this)
-        public static bool WeaveFailed { get; private set; } // holds the result status of our latest Weave operation
+
+        // holds the result status of our latest Weave operation
+        // NOTE: WeaveFailed is critical to unit tests, but isn't used for anything else. 
+        public static bool WeaveFailed { get; private set; }
 
         // debug message handler that also calls OnMessageMethod delegate
         static void HandleMessage(string msg)
@@ -50,14 +53,17 @@ namespace Mirror.Weaver
 
             // We only need to run this once per session
             // after that, all assemblies will be weaved by the event
-            if (!SessionState.GetBool("MIRROR_WEAVED", false) )
+            if (!SessionState.GetBool("MIRROR_WEAVED", false))
             {
+                // reset session flag
                 SessionState.SetBool("MIRROR_WEAVED", true);
-                WeaveExisingAssemblies();
+                SessionState.SetBool("MIRROR_WEAVE_SUCCESS", true);
+
+                WeaveExistingAssemblies();
             }
         }
 
-        static void WeaveExisingAssemblies()
+        public static void WeaveExistingAssemblies()
         {
             foreach (UnityAssembly assembly in CompilationPipeline.GetAssemblies())
             {
@@ -67,7 +73,11 @@ namespace Mirror.Weaver
                 }
             }
 
+#if UNITY_2019_3_OR_NEWER
+            EditorUtility.RequestScriptReload();
+#else
             UnityEditorInternal.InternalEditorUtility.RequestScriptReload();
+#endif
         }
 
         static string FindMirrorRuntime()
@@ -138,7 +148,8 @@ namespace Mirror.Weaver
             dependencyPaths.Add(Path.GetDirectoryName(assemblyPath));
             foreach (UnityAssembly unityAsm in CompilationPipeline.GetAssemblies())
             {
-                if (unityAsm.outputPath != assemblyPath) continue;
+                if (unityAsm.outputPath != assemblyPath)
+                    continue;
 
                 foreach (string unityAsmRef in unityAsm.compiledAssemblyReferences)
                 {
@@ -149,11 +160,16 @@ namespace Mirror.Weaver
             // passing null in the outputDirectory param will do an in-place update of the assembly
             if (Program.Process(unityEngineCoreModuleDLL, mirrorRuntimeDll, null, new[] { assemblyPath }, dependencyPaths.ToArray(), HandleWarning, HandleError))
             {
+                // NOTE: WeaveFailed is critical for unit tests but isn't used elsewhere
                 WeaveFailed = false;
+
                 //Debug.Log("Weaving succeeded for: " + assemblyPath);
             }
             else
             {
+                // Set false...will be checked in \Editor\EnterPlayModeSettingsCheck.CheckSuccessfulWeave()
+                SessionState.SetBool("MIRROR_WEAVE_SUCCESS", false);
+
                 WeaveFailed = true;
                 if (UnityLogEnabled) Debug.LogError("Weaving failed for: " + assemblyPath);
             }

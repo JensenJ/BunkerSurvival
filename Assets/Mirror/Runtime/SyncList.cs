@@ -36,8 +36,8 @@ namespace Mirror
     }
 
     // Original UNET name is SyncListStruct and original Weaver weavers anything
-    // that contains the name 'SyncListStruct', without considering the name-
-    // space.
+    // that contains the name 'SyncListStruct', without considering the namespace.
+    // Deprecated 03/20/2019
     [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use SyncList<MyStruct> instead")]
     public class SyncListSTRUCT<T> : SyncList<T> where T : struct
     {
@@ -61,11 +61,13 @@ namespace Mirror
             OP_ADD,
             OP_CLEAR,
             OP_INSERT,
-            [Obsolete("Lists now pass OP_REMOVEAT")]
+            // Deprecated 10/21/2019
+            [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Lists now pass OP_REMOVEAT")]
             OP_REMOVE,
             OP_REMOVEAT,
             OP_SET,
-            [Obsolete("Lists now use OP_SET instead of OP_DIRTY")]
+            // Deprecated 12/03/2019
+            [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Lists now use OP_SET instead of OP_DIRTY")]
             OP_DIRTY
         }
 
@@ -85,7 +87,6 @@ namespace Mirror
 
         protected virtual void SerializeItem(NetworkWriter writer, T item) { }
         protected virtual T DeserializeItem(NetworkReader reader) => default;
-
 
         protected SyncList(IEqualityComparer<T> comparer = null)
         {
@@ -385,7 +386,7 @@ namespace Mirror
 
             public void Reset() => index = -1;
             object IEnumerator.Current => Current;
-            public void Dispose() {}
+            public void Dispose() { }
         }
     }
 }
