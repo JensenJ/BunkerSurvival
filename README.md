@@ -1,2 +1,2 @@
 # BunkerSurvival
-Co-op survival game, defend against the enemy by building a bunker!
+Co-op survival game based around the idea of building a bunker to survive in.
